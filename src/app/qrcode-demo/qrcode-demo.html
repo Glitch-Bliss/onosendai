@@ -1,0 +1,17 @@
+<div>
+    <button (click)="scan()" [disabled]="qrService.isScanning()">
+        {{ qrService.isScanning() ? 'Scanning...' : 'Start Scan' }}
+    </button>
+
+    <button (click)="reset()">Reset</button>
+
+    @if(qrService.scannedCode()) {
+    <p>
+        Scanned QR Code: {{ qrService.scannedCode() }}
+    </p>
+    } @else {
+        <p>No code found</p>
+    }
+
+    <p>Scanned code also : {{this._scannedCode()}}</p>
+</div>

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">onosendai</string>
+    <string name="title_activity_main">onosendai</string>
+    <string name="package_name">com.onosendai.app</string>
+    <string name="custom_url_scheme">com.onosendai.app</string>
+</resources>

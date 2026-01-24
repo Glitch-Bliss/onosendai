@@ -1,59 +1,204 @@
-# Onosendai
+# 📱 NFC Demo – Angular + Capacitor
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.1.1.
+This is an Angular 17+ project wrapped with Capacitor,
+demonstrating NFC read/write on Android and iOS.
 
-## Development server
+It allows you to build:
+- Android APK (debug & release)
+- iOS app (requires macOS & Xcode)
 
-To start a local development server, run:
+Capacitor wraps the compiled Angular web app inside a native WebView.
 
-```bash
-ng serve
-```
+------------------------------------------------------------
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+PREREQUISITES
 
-## Code scaffolding
+Common:
+- Node.js >= 18
+- npm >= 9
+- Angular CLI >= 17
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+Check:
+node -v
+npm -v
+ng version
 
-```bash
-ng generate component component-name
-```
+------------------------------------------------------------
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Android:
+- Android Studio
+- Android SDK & Build Tools
+- Java JDK 17+
 
-```bash
-ng generate --help
-```
+Check:
+adb --version
 
-## Building
+------------------------------------------------------------
 
-To build the project run:
+iOS (macOS only):
+- macOS
+- Xcode
+- CocoaPods
 
-```bash
+Check:
+xcode-select --version
+pod --version
+
+------------------------------------------------------------
+
+INSTALL DEPENDENCIES
+
+npm install
+
+------------------------------------------------------------
+
+INITIALIZE CAPACITOR (ONCE)
+
+npm install @capacitor/core @capacitor/cli
+npx cap init
+
+Example values:
+App name: NfcDemo
+App ID: com.example.nfcdemo
+
+------------------------------------------------------------
+
+BUILD ANGULAR APP
+
 ng build
-```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Output directory:
+dist/<app-name>/
 
-## Running unit tests
+Check capacitor.config.ts:
+webDir: 'dist/<app-name>'
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+------------------------------------------------------------
 
-```bash
-ng test
-```
+ANDROID – GENERATE APK
 
-## Running end-to-end tests
+1) Add Android platform (once)
+npx cap add android
 
-For end-to-end (e2e) testing, run:
+2) Sync web assets & plugins
+npx cap sync android
 
-```bash
-ng e2e
-```
+3) Open Android Studio
+npx cap open android
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+4) Build APK in Android Studio
+Debug APK (testing):
+Build -> Build Bundle(s) / APK(s) -> Build APK(s)
+Output: android/app/build/outputs/apk/debug/app-debug.apk
 
-## Additional Resources
+Release APK (distribution):
+Build -> Generate Signed Bundle / APK
+Output: android/app/build/outputs/apk/release/app-release.apk
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Optional – run directly on device:
+npx cap run android
+
+------------------------------------------------------------
+
+iOS – BUILD IOS APP (macOS ONLY)
+
+1) Add iOS platform (once)
+npx cap add ios
+
+2) Sync web assets
+npx cap sync ios
+
+3) Open Xcode
+npx cap open ios
+
+Then:
+- Configure Signing & Capabilities
+- Enable NFC Tag Reading entitlement
+- Select a real device
+- Click Run
+
+Note:
+iOS simulators do NOT support NFC or hardware features.
+
+------------------------------------------------------------
+
+TYPICAL DEVELOPMENT WORKFLOW
+
+ng build
+npx cap sync
+npx cap open android   (or ios)
+
+------------------------------------------------------------
+
+COMMON ISSUES
+
+White screen        -> webDir mismatch
+Old content         -> forgot ng build
+Plugin not working  -> forgot cap sync
+NFC not detected    -> using emulator instead of real device
+
+------------------------------------------------------------
+
+KEY CONCEPT
+
+Capacitor does NOT convert Angular into native code.
+It wraps the compiled web app inside a native WebView.
+
+------------------------------------------------------------
+
+USEFUL LINKS
+
+Angular: https://angular.io
+Capacitor: https://capacitorjs.com
+Android Studio: https://developer.android.com/studio
+Xcode: https://developer.apple.com/xcode/
+
+------------------------------------------------------------
+
+EXAMPLE CI/CD BUILD SCRIPT (GITHUB ACTIONS)
+
+name: Build Android APK
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: Build APK
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build Angular app
+      run: npm run build
+
+    - name: Install Capacitor CLI
+      run: npm install @capacitor/cli -g
+
+    - name: Sync Android platform
+      run: npx cap sync android
+
+    - name: Build Android APK (Gradle)
+      working-directory: android
+      run: ./gradlew assembleDebug
+
+    - name: Upload APK artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: app-debug.apk
+        path: android/app/build/outputs/apk/debug/app-debug.apk
+
+Note: iOS CI/CD requires macOS runners and Xcode signing.
