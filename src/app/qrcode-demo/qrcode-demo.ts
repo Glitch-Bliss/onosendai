@@ -1,6 +1,7 @@
 import { Component, inject, Signal, signal } from '@angular/core';
 import { QrcodeScannerService } from '../services/qrcode-scanner.service';
 import { Barcode } from '@capacitor-mlkit/barcode-scanning';
+import { single } from 'rxjs';
 
 @Component({
   selector: 'app-qrcode-demo',
@@ -15,9 +16,7 @@ export class QrcodeDemo {
   constructor(public qrService: QrcodeScannerService) {}
 
   scan() {
-    this.qrService.scanSingleBarcode().then( barcode => {
-      this._scannedCode.set(barcode?.rawValue?.toString());
-    });
+    this.qrService.start('single');
   }
 
   reset() {

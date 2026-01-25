@@ -5,13 +5,5 @@
 
     <button (click)="reset()">Reset</button>
 
-    @if(qrService.scannedCode()) {
-    <p>
-        Scanned QR Code: {{ qrService.scannedCode() }}
-    </p>
-    } @else {
-        <p>No code found</p>
-    }
-
-    <p>Scanned code also : {{this._scannedCode()}}</p>
+    <p>Scanned code also : {{qrService.scanResult().at(-1)?.rawValue}}</p>
 </div>
