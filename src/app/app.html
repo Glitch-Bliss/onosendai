@@ -1,1 +1,10 @@
-<app-qrcode-demo></app-qrcode-demo>
+<div ngTabs>
+  <div ngTabList selectionMode="follow" selectedTab="QRCode">
+    <div ngTab value="QRCode">QRCode</div>
+  </div>
+  <div class="sliding-window">
+    <div ngTabPanel [preserveContent]="true" value="QRCode">
+      <ng-template ngTabContent><app-qrcode-demo></app-qrcode-demo></ng-template>
+    </div>
+  </div>
+</div>

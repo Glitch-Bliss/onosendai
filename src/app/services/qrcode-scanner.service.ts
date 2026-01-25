@@ -1,5 +1,5 @@
 // src/app/services/barcode-scanner.service.ts
-import { computed, effect, Injectable, signal, Signal, WritableSignal } from '@angular/core';
+import { computed, effect, Injectable, NgZone, signal, Signal, WritableSignal } from '@angular/core';
 import {
   BarcodeScanner,
   BarcodeFormat,
@@ -7,7 +7,8 @@ import {
   PermissionStatus,
   BarcodesScannedEvent,
   Barcode,
-  CameraPermissionState
+  CameraPermissionState,
+  Resolution
 } from '@capacitor-mlkit/barcode-scanning';
 import { PluginListenerHandle } from '@capacitor/core';
 import { Torch } from '@capawesome/capacitor-torch';
@@ -24,11 +25,12 @@ export class QrcodeScannerService {
   /** ===========================
    * Internal mutable state
    * =========================== */
-  private readonly _state = signal<ScanState>('idle');
-  private readonly _scanResult = signal<Barcode[]>([]);
+  private readonly _state: WritableSignal<ScanState> = signal<ScanState>('idle');
+  private readonly _scanResult: WritableSignal<Barcode[]> = signal<Barcode[]>([]);
+  private readonly _torchEnabled: WritableSignal<boolean> = signal(false);
+  private readonly _lastScanDuration: WritableSignal<number> = signal(0);
   private listener?: PluginListenerHandle;
   private timeoutHandle?: number;
-  private _torchEnabled = signal(false);
 
   /** ===========================
    * Public read-only signals
@@ -37,48 +39,68 @@ export class QrcodeScannerService {
   public readonly scanResult = this._scanResult.asReadonly();
   public readonly lastBarcode = computed(() => this._scanResult().at(-1) ?? null);
   public readonly isScanning = computed(() => this._state() === 'scanning');
-  public torchEnabled: Signal<boolean> = this._torchEnabled;
-
+  public readonly torchEnabled: Signal<boolean> = this._torchEnabled;
+  public readonly lastScanDuration: Signal<number> = this._lastScanDuration;
 
   private autoStopEffect = effect(() => {
     if (this._state() === 'paused') {
-      this.stop();
+      // schedule async stop, don’t run native code directly
+      queueMicrotask(() => this.stop());
     }
   });
+
+
+  constructor(private readonly ngZone: NgZone) { }
 
   /** ===========================
    * Start scanning (single or continuous)
    * =========================== */
-  async start(mode: ScanMode = 'continuous', timeoutMs?: number) {
+  async startScan(mode: ScanMode = 'continuous', timeoutMs?: number) {
     if (this._state() !== 'idle') return;
 
-    this._state.set('scanning');
-    this.resetScannedCode();
-    document.body.classList.add('barcode-scanner-active');
+    this.ngZone.run(() => {
+      this._state.set('scanning');
+      this.resetScannedCode();
+      document.body.classList.add('barcode-scanner-active');
+    });
 
     await this.ensurePermissions();
 
-    // Setup listener
+    // Listener (native callback → re-enter Angular explicitly)
     this.listener = await BarcodeScanner.addListener(
       'barcodesScanned',
-      async ({ barcodes }: BarcodesScannedEvent) => {
-        this._scanResult.set(barcodes);
+      ({ barcodes }: BarcodesScannedEvent) => {
+        this.ngZone.run(() => {
+          this._scanResult.set(barcodes);
 
-        if (mode === 'single') {
-          // Pause scanning for single mode
-          this._state.set('paused');
-        }
+          if (mode === 'single') {
+            this._state.set('paused');
+          }
+        });
       }
     );
 
-    await BarcodeScanner.startScan();
+    // Start scan outside Angular
+    await this.ngZone.runOutsideAngular(() =>
+      BarcodeScanner.startScan({
+        formats: [BarcodeFormat.QrCode],
+        lensFacing: LensFacing.Back,
+        resolution: Resolution['1920x1080'],
+      })
+    );
 
-    // Optional timeout
+    this.ngZone.run(() => {
+      this._lastScanDuration.set(new Date().getSeconds());
+    });
+
     if (timeoutMs) {
-      this.timeoutHandle = window.setTimeout(() => this.stop(), timeoutMs);
+      this.timeoutHandle = window.setTimeout(
+        () => this.ngZone.run(() => this.stop()),
+        timeoutMs
+      );
     }
-
   }
+
 
   /** ===========================
    * Stop scanning and cleanup
@@ -86,23 +108,27 @@ export class QrcodeScannerService {
   async stop() {
     if (this._state() === 'idle') return;
 
-    // Cleanup listener
-    await this.listener?.remove();
-    this.listener = undefined;
+    const startSeconds = this._lastScanDuration();
 
-    // Stop scanner
-    await BarcodeScanner.stopScan();
+    await this.ngZone.runOutsideAngular(async () => {
+      await this.listener?.remove();
+      this.listener = undefined;
+      await BarcodeScanner.stopScan();
+    });
 
-    // Clear timeout if any
-    if (this.timeoutHandle) {
-      clearTimeout(this.timeoutHandle);
-      this.timeoutHandle = undefined;
-    }
+    this.ngZone.run(() => {
+      this._lastScanDuration.set(new Date().getSeconds() - startSeconds);
 
-    // Update state and DOM
-    this._state.set('idle');
-    document.body.classList.remove('barcode-scanner-active');
+      if (this.timeoutHandle) {
+        clearTimeout(this.timeoutHandle);
+        this.timeoutHandle = undefined;
+      }
+
+      this._state.set('idle');
+      document.body.classList.remove('barcode-scanner-active');
+    });
   }
+
 
   /** ===========================
    * Permission check helper
@@ -123,10 +149,27 @@ export class QrcodeScannerService {
     }
   }
 
+  async googleScan(): Promise<void> {
+    this.ngZone.run(() => {
+      this._lastScanDuration.set(new Date().getSeconds());
+    });
+
+    const { barcodes } = await this.ngZone.runOutsideAngular(() =>
+      BarcodeScanner.scan()
+    );
+
+    this.ngZone.run(() => {
+      this._lastScanDuration.update(
+        lastSeconds => new Date().getSeconds() - lastSeconds
+      );
+      this._scanResult.set(barcodes);
+    });
+  }
+
   /** Torch controls */
   async enableTorch() {
-    await Torch.enable();
-    this._torchEnabled.set(true);
+    await this.ngZone.runOutsideAngular(() => Torch.enable());
+    this.ngZone.run(() => this._torchEnabled.set(true));
   }
 
   async disableTorch() {
@@ -135,9 +178,9 @@ export class QrcodeScannerService {
   }
 
   async toggleTorch() {
-    await Torch.toggle();
+    await this.ngZone.runOutsideAngular(() => Torch.toggle());
     const { enabled } = await Torch.isEnabled();
-    this._torchEnabled.set(enabled);
+    this.ngZone.run(() => this._torchEnabled.set(enabled));
   }
 
   async isTorchEnabled(): Promise<boolean> {

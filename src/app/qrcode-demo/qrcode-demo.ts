@@ -13,10 +13,18 @@ export class QrcodeDemo {
 
   _scannedCode = signal<string | undefined>(undefined);
 
-  constructor(public qrService: QrcodeScannerService) {}
+  constructor(public qrService: QrcodeScannerService) { }
+
+  async scanWithGoogle() {
+    if (await this.qrService.isGoogleBarcodeScannerModuleAvailable()) {
+      this.qrService.googleScan();
+    } else {
+      await this.qrService.installGoogleBarcodeScannerModule();
+    }
+  }
 
   scan() {
-    this.qrService.start('single');
+    this.qrService.startScan('single');
   }
 
   reset() {

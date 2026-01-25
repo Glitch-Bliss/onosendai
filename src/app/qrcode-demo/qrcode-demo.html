@@ -3,7 +3,12 @@
         {{ qrService.isScanning() ? 'Scanning...' : 'Start Scan' }}
     </button>
 
+    <button (click)="scanWithGoogle()" [disabled]="qrService.isScanning()">
+        {{ qrService.isScanning() ? 'Scanning...' : 'Scan With Google' }}
+    </button>
+
     <button (click)="reset()">Reset</button>
 
     <p>Scanned code also : {{qrService.scanResult().at(-1)?.rawValue}}</p>
+    <p>Last scan execution duration : {{qrService.lastScanDuration()}} seconds</p>
 </div>
