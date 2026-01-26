@@ -1,14 +1,68 @@
-<div>
-    <button (click)="scan()" [disabled]="qrService.isScanning()">
-        {{ qrService.isScanning() ? 'Scanning...' : 'Start Scan' }}
-    </button>
-
-    <button (click)="scanWithGoogle()" [disabled]="qrService.isScanning()">
-        {{ qrService.isScanning() ? 'Scanning...' : 'Scan With Google' }}
-    </button>
-
-    <button (click)="reset()">Reset</button>
-
-    <p>Scanned code also : {{qrService.scanResult().at(-1)?.rawValue}}</p>
-    <p>Last scan execution duration : {{qrService.lastScanDuration()}} seconds</p>
+<div class="root">
+    <h1>
+        <span>
+            S
+        </span>
+        <span>
+            C
+        </span>
+        <span>
+            A
+        </span>
+        <span>
+            N
+        </span>
+    </h1>
+    <div class="content">
+        <div class="elements_list">
+            <div class="bars_wrapper">
+                <div class="bars">
+                    <div class="large"></div>
+                    <div class="thin"></div>
+                </div>
+            </div>
+            <div class="button_list">
+                <button (click)="scanWithGoogle()" [disabled]="qrService.isScanning()">
+                    <a>
+                        <div class="wrapper">
+                            <div class="dot">
+                            </div>
+                            {{ qrService.isScanning() ? 'Scanning...' : 'Scan With Google integrated' }}
+                        </div>
+                    </a>
+                </button>                
+                <button (click)="scan()" [disabled]="qrService.isScanning()">
+                    <a>
+                        <div class="wrapper">
+                            <div class="dot">
+                            </div>
+                            {{ qrService.isScanning() ? 'Scanning...' : 'Scan with customizable fallback solution' }}
+                        </div>
+                    </a>
+                </button>
+                <button (click)="qrService.stop()" [disabled]="!qrService.isScanning()">
+                    <a>
+                        <div class="wrapper">
+                            <div class="dot">
+                            </div>
+                            Stop stuck scan
+                        </div>
+                    </a>
+                </button>
+                <button (click)="reset()">
+                    <a>
+                        <div class="wrapper">
+                            <div class="dot">
+                            </div>
+                            Reset
+                        </div>
+                    </a>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div>
+        <p>Scanned code value : {{qrService.scanResult().at(-1)?.rawValue}}</p>
+        <p>Last scan duration : {{qrService.lastScanDuration()}} seconds</p>
+    </div>
 </div>
