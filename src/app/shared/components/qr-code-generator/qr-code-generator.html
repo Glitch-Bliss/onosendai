@@ -1,0 +1,46 @@
+<h1>
+    <span>
+        G
+    </span>
+    <span>
+        E
+    </span>
+    <span>
+        N
+    </span>
+    <span>
+        E
+    </span>
+    <span>
+        R
+    </span>
+    <span>
+        A
+    </span>
+    <span>
+        T
+    </span>
+    <span>
+        E
+    </span>
+</h1>
+
+<button (click)="generateCode(ElementType.BUILDING)">
+    <a>
+        <div class="wrapper">
+            <div class="dot">
+            </div>
+            Generate Buildings QR codes
+        </div>
+    </a>
+</button>
+
+<div>
+    @for(qrcode of codesGenerated(); track $index) {
+    <qrcode [qrdata]="qrcode" 
+        [allowEmptyString]="false" [ariaLabel]="'QR Code image with the following content...'"
+        [cssClass]="'center'" [colorDark]="'#000000ff'" [colorLight]="'#ffffffff'" [elementType]="'canvas'"
+        [errorCorrectionLevel]="'Q'" [imageSrc]="'./angular-logo.png'" [imageHeight]="75" [imageWidth]="75" [margin]="4"
+        [scale]="1" [title]="'A custom title attribute'" [width]="300"></qrcode>
+    }
+</div>

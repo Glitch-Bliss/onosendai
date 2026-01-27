@@ -1,5 +1,5 @@
 import { Component, inject, Signal, signal } from '@angular/core';
-import { QrcodeScannerService } from '../services/qrcode-scanner.service';
+import { QrcodeScannerService } from '../../../core/services/qrcode-scanner.service';
 import { Barcode } from '@capacitor-mlkit/barcode-scanning';
 import { single } from 'rxjs';
 

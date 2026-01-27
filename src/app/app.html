@@ -1,10 +1,17 @@
 <div ngTabs>
-  <div ngTabList selectionMode="follow" selectedTab="QRCode">
-    <div ngTab value="QRCode"></div>
+
+  <div ngTabList selectionMode="follow" selectedTab="scan">
+    <div ngTab value="scan">Scan</div>
+    <div ngTab value="generate">Generate</div>
   </div>
+
   <div class="sliding-window">
-    <div ngTabPanel [preserveContent]="true" value="QRCode">
+    <div ngTabPanel [preserveContent]="true" value="scan">
       <ng-template ngTabContent><app-qrcode-demo></app-qrcode-demo></ng-template>
     </div>
+    <div ngTabPanel [preserveContent]="true" value="generate">
+      <ng-template ngTabContent><app-qr-code-generator></app-qr-code-generator></ng-template>
+    </div>    
   </div>
+  
 </div>
