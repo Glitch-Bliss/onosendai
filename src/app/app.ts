@@ -1,12 +1,12 @@
 import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { QrcodeDemo } from "./shared/components/qrcode-demo/qrcode-demo";
-import {Tab, Tabs, TabList, TabPanel, TabContent} from '@angular/aria/tabs';
-import { QrCodeGenerator } from "./shared/components/qr-code-generator/qr-code-generator";
+import { Tab, Tabs, TabList, TabPanel, TabContent } from '@angular/aria/tabs';
+import { QrCodeGenerator } from "./features/components/qr-code-generator/qr-code-generator";
+import { AppShellComponent } from "./core/layout/app-shell/app-shell";
 
 @Component({
+  standalone: true,
   selector: 'app-root',
-  imports: [QrcodeDemo, TabList, Tab, Tabs, TabPanel, TabContent, QrCodeGenerator],
+  imports: [AppShellComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

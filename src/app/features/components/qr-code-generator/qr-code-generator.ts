@@ -1,11 +1,12 @@
 import { Component, signal, WritableSignal } from '@angular/core';
 import { ElementType } from '../../../core/enums/element-type.enum';
-import { QrItemModel } from '../../../features/qr/models/qr-item.model';
+import { QrItemModel } from '../../qr/models/qr-item.model';
 import { v4 as uuidv4 } from 'uuid';
-import { QrFacade } from '../../../features/qr/services/qr.facade';
+import { QrFacade } from '../../qr/services/qr.facade';
 import { QRCodeComponent } from 'angularx-qrcode';
 
 @Component({
+  standalone: true,
   selector: 'app-qr-code-generator',
   imports: [QRCodeComponent],
   templateUrl: './qr-code-generator.html',
@@ -20,7 +21,7 @@ export class QrCodeGenerator {
   generateCode(type: ElementType, quantity: number = 10) {
     this.codesGenerated = signal([]);
     for (let i = 0; i < quantity; i++) {
-      const qrString:string = QrFacade.generateQrCodeCode(new QrItemModel(uuidv4(), "", type));
+      const qrString: string = QrFacade.generateQrCodeCode(new QrItemModel(uuidv4(), "", type));
       this.codesGenerated.update(codesArr => {
         codesArr.push(qrString);
         return codesArr;
