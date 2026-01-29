@@ -4,7 +4,7 @@ import { QrcodeDemo } from "../components/demo/demo";
 
 @Component({
     standalone: true,
-    selector: 'app-qr-page',
+    selector: 'app-scanners-demo-page',
     imports: [
     CommonModule,
     QrcodeDemo

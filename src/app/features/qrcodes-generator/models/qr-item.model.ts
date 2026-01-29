@@ -2,14 +2,14 @@ import { ElementType } from "../../../core/enums/element-type.enum";
 
 export interface QrItem {
   uid: string;
-  name: string;
+  userid: string;
   type: ElementType;
 }
 
 export class QrItemModel implements QrItem {
   constructor(
     public uid: string,
-    public name: string,
+    public userid: string,
     public type: ElementType
   ) {}
 
