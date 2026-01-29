@@ -1,2 +1,14 @@
-
-<app-button-component (clicked)="generateAndDownload(ElementType.VEHICLE, 30)" buttonText="Generate Vehicles QR codes"></app-button-component>
+<div class="elements_list">
+    <div class="bars_wrapper">
+        <div class="bars">
+            <div class="large"></div>
+            <div class="thin"></div>
+        </div>
+    </div>
+    <div class="button_list">
+        @for(type of typesButton; track $index) {
+        <app-button-component (clicked)="generateAndDownload(type, 30)"
+            buttonText="Generate {{type}} QR codes"></app-button-component>
+        }
+    </div>
+</div>

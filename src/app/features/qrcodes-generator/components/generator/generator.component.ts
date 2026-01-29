@@ -27,6 +27,7 @@ export class QrCodeGeneratorComponent {
   ElementType = ElementType;
   codesGenerated: WritableSignal<QrCodeView[]> = signal([]);
   elementsNumber = Array.from({ length: 10 });
+  typesButton = [ElementType.BUILDING, ElementType.NPC, ElementType.OBJECT, ElementType.SCATTER, ElementType.VEHICLE];
 
   private generator = inject(QrCodesService);
   private pdf = inject(QrCodesPdfService);
