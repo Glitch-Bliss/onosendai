@@ -3,6 +3,10 @@ import { PDFDocument, rgb } from 'pdf-lib';
 import { ElementType } from '../../../core/enums/element-type.enum';
 import { QR_TYPE_REGISTRY } from '../../../core/registries/qr-type.registry';
 import { ProgressService } from '../../../core/services/progression.service';
+import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
+import { Share } from '@capacitor/share';
+import { Capacitor } from '@capacitor/core';
+import { FileTransfer } from '@capacitor/file-transfer';
 
 const CM_TO_PT = 28.35;
 const QR_SIZE_PT = 2 * CM_TO_PT;
@@ -14,10 +18,10 @@ export class QrCodesPdfService {
 
   progressService = inject(ProgressService);
 
-  async export(qrImages: string[], types: ElementType[]) {
-    
+  async export(qrImages: string[], type: ElementType) {
+
     this.progressService.start("Generating codes");
-    
+
     const pdf = await PDFDocument.create();
     this.progressService.set(10);
     const page = pdf.addPage();
@@ -32,7 +36,7 @@ export class QrCodesPdfService {
       const qrImg = await pdf.embedPng(qrImages[i]);
 
       const logoBuffer = await fetch(
-        QR_TYPE_REGISTRY[types[i]].image
+        QR_TYPE_REGISTRY[type].image
       ).then(r => r.arrayBuffer());
 
       const logoImg = await pdf.embedPng(logoBuffer);
@@ -47,7 +51,7 @@ export class QrCodesPdfService {
 
       // ── Logo background (white safety zone) ─
       const logoBgSize = LOGO_SIZE_PT + 3;
-      const radius = logoBgSize /2;
+      const radius = logoBgSize / 2;
       page.drawCircle({
         x: x + (QR_SIZE_PT) / 2,
         y: y - (QR_SIZE_PT) / 2,
@@ -71,14 +75,31 @@ export class QrCodesPdfService {
         y -= QR_SIZE_PT + 20;
       }
 
-      this.progressService.set(Math.ceil(i/qrImages.length*100));
+      this.progressService.set(Math.ceil(i / qrImages.length * 100));
     }
 
-    const bytes = await pdf.save();
-    this.download(bytes);
+    if (Capacitor.isNativePlatform()) {
+      const pdfBase64 = await pdf.saveAsBase64();
+      const mobileFileUrl: string = await this.saveFile("Generated QRCodes for " + type + ".pdf", pdfBase64);
+
+    } else {
+      const bytes = await pdf.save();
+      this.downloadOnDesktop(bytes);
+    }
+
   }
 
-  private download(bytes: Uint8Array) {
+  private async saveFile(fileName: string, base64: string): Promise<string> {
+    const result = await Filesystem.writeFile({
+      path: fileName,
+      data: base64,
+      directory: Directory.Documents,
+    });
+    this.progressService.complete();
+    return result.uri;
+  }
+
+  private async downloadOnDesktop(bytes: Uint8Array) {
     const blob = new Blob([new Uint8Array(bytes)], {
       type: 'application/pdf',
     });

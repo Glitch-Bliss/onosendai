@@ -35,9 +35,7 @@ export class QrCodeGeneratorComponent {
   async generateAndDownload(type: ElementType, quantity: number = 10) {
     const qrs: QrItem[] = this.generateQrCodesModels(type, quantity);
     const images: string[] = await this.generator.generateQrCodesDataURIBatch(qrs);
-    const types: ElementType[] = qrs.map(q => q.type);
-
-    await this.pdf.export(images, types);
+    await this.pdf.export(images, type);
   }
 
   private generateQrCodesModels(type: ElementType, quantity: number = 10) {

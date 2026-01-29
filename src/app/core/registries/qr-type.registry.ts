@@ -9,23 +9,23 @@ export const QR_TYPE_REGISTRY: Record<ElementType, QrTypeMeta> = {
         qrcodeIndex: 1
     },
     [ElementType.BUILDING]: {
-        label: 'Vehicle',
-        image: 'assets/element-types/vehicle.png',
+        label: 'Building',
+        image: 'assets/element-types/building.png',
         qrcodeIndex: 2
     },
     [ElementType.NPC]: {
-        label: 'Vehicle',
-        image: 'assets/element-types/vehicle.png',
+        label: 'Npc',
+        image: 'assets/element-types/npc.png',
         qrcodeIndex: 3
     },
     [ElementType.OBJECT]: {
-        label: 'Vehicle',
-        image: 'assets/element-types/vehicle.png',
+        label: 'Object',
+        image: 'assets/element-types/object.png',
         qrcodeIndex: 4
     },
     [ElementType.SCATTER]: {
-        label: 'Vehicle',
-        image: 'assets/element-types/vehicle.png',
+        label: 'Scatter',
+        image: 'assets/element-types/scatter.png',
         qrcodeIndex: 5
     }                
 };
