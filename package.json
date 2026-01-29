@@ -40,6 +40,7 @@
     "@capawesome/capacitor-torch": "^8.0.0",
     "angularx-qrcode": "^21.0.4",
     "barcode-detector": "^3.0.8",
+    "nanoid": "^5.1.6",
     "pdf-lib": "^1.17.1",
     "qrcode": "^1.5.4",
     "rxjs": "~7.8.0",

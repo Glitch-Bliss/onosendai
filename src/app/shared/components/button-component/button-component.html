@@ -1,9 +1,9 @@
-<button (click)="generateAndDownload(ElementType.VEHICLE)">
+<button (click)="clicked.emit()">
     <a>
         <div class="wrapper">
             <div class="dot">
             </div>
-            Generate Vehicles QR codes
+            {{buttonText()}}
         </div>
     </a>
 </button>
