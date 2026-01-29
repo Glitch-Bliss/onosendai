@@ -1,12 +1,12 @@
 import { Component, inject, Signal, signal } from '@angular/core';
-import { QrcodeScannerService } from '../../../core/services/qrcode-scanner.service';
+import { QrcodeScannerService } from '../../../../core/services/qrcode-scanner.service';
 
 @Component({
   standalone: true,
-  selector: 'app-qrcode-demo',
+  selector: 'app-scanners-demo',
   imports: [],
-  templateUrl: './qrcode-demo.html',
-  styleUrl: './qrcode-demo.scss',
+  templateUrl: './demo.html',
+  styleUrl: './demo.scss',
 })
 export class QrcodeDemo {
 

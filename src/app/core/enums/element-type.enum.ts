@@ -5,5 +5,4 @@ export enum ElementType {
     NPC = "NPC",
     BUILDING ="Building",
     SCATTER = "Scatter"
-
 }

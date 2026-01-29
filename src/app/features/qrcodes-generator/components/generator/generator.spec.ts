@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { QrCodeGenerator } from './qr-code-generator';
+import { QrCodeGenerator } from './generator';
 
 describe('QrCodeGenerator', () => {
   let component: QrCodeGenerator;

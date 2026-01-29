@@ -1,19 +1,19 @@
 import { CommonModule } from "@angular/common";
 import { Component, inject } from "@angular/core";
-import { QrCodeGenerator } from "../../components/qr-code-generator/qr-code-generator";
+import { QrcodeDemo } from "../components/demo/demo";
 
 @Component({
     standalone: true,
     selector: 'app-qr-page',
     imports: [
-        CommonModule,
-        QrCodeGenerator
-    ],
+    CommonModule,
+    QrcodeDemo
+],
     template: `
     <h1>@for (c of title; track $index) { <span>{{ c }}</span> }</h1>
-    <app-qr-code-generator/>
+    <app-scanners-demo/>
   `,
 })
-export class QrCodeGeneratorPage {
-    title = 'GENERATE';
+export class DemoPage {
+    title = 'SCANNERS';
 }

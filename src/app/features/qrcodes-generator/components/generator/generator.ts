@@ -1,16 +1,16 @@
 import { Component, signal, WritableSignal } from '@angular/core';
-import { ElementType } from '../../../core/enums/element-type.enum';
-import { QrItemModel } from '../../qr/models/qr-item.model';
+import { ElementType } from '../../../../core/enums/element-type.enum';
 import { v4 as uuidv4 } from 'uuid';
-import { QrFacade } from '../../qr/services/qr.facade';
 import { QRCodeComponent } from 'angularx-qrcode';
+import { QrFacade } from '../../services/qr.facade';
+import { QrItemModel } from '../../models/qr-item.model';
 
 @Component({
   standalone: true,
   selector: 'app-qr-code-generator',
   imports: [QRCodeComponent],
-  templateUrl: './qr-code-generator.html',
-  styleUrl: './qr-code-generator.scss',
+  templateUrl: './generator.html',
+  styleUrl: './generator.scss',
 })
 export class QrCodeGenerator {
 

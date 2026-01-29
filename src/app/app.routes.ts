@@ -19,7 +19,7 @@ export const routes: Routes = [
   {
     path: 'qurcodeGenerator',
     loadComponent: () =>
-      import('./features/qr/pages/qr-code-generator.page')
+      import('./features/qrcodes-generator/pages/qr-code-generator.page')
         .then(m => m.QrCodeGeneratorPage),
     data: {
       menu: {
@@ -34,7 +34,7 @@ export const routes: Routes = [
   {
     path: 'scannersdemo',
     loadComponent: () =>
-      import('./features/demo/pages/demo.page')
+      import('./features/scanners-demo/pages/demo.page')
         .then(m => m.DemoPage),
     data: {
       menu: {

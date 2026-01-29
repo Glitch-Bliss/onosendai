@@ -1,6 +1,4 @@
 import { Component, signal } from '@angular/core';
-import { Tab, Tabs, TabList, TabPanel, TabContent } from '@angular/aria/tabs';
-import { QrCodeGenerator } from "./features/components/qr-code-generator/qr-code-generator";
 import { AppShellComponent } from "./core/layout/app-shell/app-shell";
 
 @Component({
