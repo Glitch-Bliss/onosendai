@@ -1,26 +1,61 @@
 import { Injectable } from '@angular/core';
-import { QrItem } from '../models/qr-item.model';
-import QRCode from 'qrcode';
 import { QR_TYPE_REGISTRY } from '../../../core/registries/qr-type.registry';
+import { ElementType } from '../../../core/enums/element-type.enum';
+import { Encoded } from '@nuintun/qrcode';
 
 @Injectable({ providedIn: 'root' })
 export class QrCodesService {
 
-  generateQrCodesDataURI(qr: QrItem): Promise<string> {
-    const shortenedQrCode: string = `${qr.userid}|${qr.uid}|${QR_TYPE_REGISTRY[qr.type].qrcodeIndex}`;
-    return QRCode.toDataURL(btoa(shortenedQrCode), {
-      errorCorrectionLevel: 'M', // REQUIRED if image nearby
-      margin: 1,
-      width: 512,               // high-res source
-      color: {
-        dark: '#000000',
-        light: '#ffffff',
-      },
+  private workerGenerator?: Worker;
+  private workerGifToPng?: Worker;
+
+  generateQrCodesDataUriByWorker(qrCodesCodes: string[]): Promise<number[][][]> {
+
+    if (!this.workerGenerator) {
+      this.workerGenerator = new Worker(
+        new URL('./../workers/qrcode-generator.worker', import.meta.url),
+        { type: 'module' }
+      );
+    }
+
+    return new Promise((resolve, reject) => {
+      this.workerGenerator!.onmessage = ({ data }) => {
+        if (data.type === 'done') {
+          resolve(data.images)
+        }
+        if (data.type === 'progress') {
+          console.info("prout");
+        }
+      };
+
+      this.workerGenerator!.onerror = reject;
+
+      this.workerGenerator!.postMessage(qrCodesCodes);
     });
   }
 
-  generateQrCodesDataURIBatch(qrs: QrItem[]): Promise<string[]> {
-    return Promise.all(qrs.map(qr => this.generateQrCodesDataURI(qr)));
+  convertGifQrCodesToPng(images: string[]): Promise<string[]> {
+    if (!this.workerGifToPng) {
+      this.workerGifToPng = new Worker(
+        new URL('./../workers/gif-to-png.worker', import.meta.url),
+        { type: 'module' }
+      );
+    }
+    return new Promise((resolve, reject) => {
+      this.workerGifToPng!.onmessage = ({ data }) => {
+        if (data.type === 'done') {
+          console.info("never done ? ");
+          resolve(data.images);
+        }
+        if (data.type === 'progress') {
+          console.info("prout prout");
+        }
+      };
+
+      this.workerGifToPng!.onerror = reject;
+
+      this.workerGifToPng!.postMessage(images);
+    });
   }
 
 }

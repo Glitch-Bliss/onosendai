@@ -7,6 +7,7 @@ import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import { Share } from '@capacitor/share';
 import { Capacitor } from '@capacitor/core';
 import { FileTransfer } from '@capacitor/file-transfer';
+import { Encoded } from '@nuintun/qrcode';
 
 const CM_TO_PT = 28.35;
 const QR_SIZE_PT = 2 * CM_TO_PT;
@@ -17,49 +18,50 @@ const LOGO_SIZE_PT = QR_SIZE_PT * LOGO_RATIO;
 export class QrCodesPdfService {
 
   progressService = inject(ProgressService);
-
-  async export(qrImages: string[], type: ElementType) {
+  async export(qrCodesMatrixes: number[][][], type: ElementType) {
 
     this.progressService.start("Generating codes");
 
     const pdf = await PDFDocument.create();
     this.progressService.set(10);
     const page = pdf.addPage();
-
     const { width, height } = page.getSize();
 
     let x = 40;
     let y = height - 40;
 
-    for (let i = 0; i < qrImages.length; i++) {
+    for (let i = 0; i < qrCodesMatrixes.length; i++) {
+      const matrix: number[][] = qrCodesMatrixes[i];
 
-      const qrImg = await pdf.embedPng(qrImages[i]);
-
-      const logoBuffer = await fetch(
-        QR_TYPE_REGISTRY[type].image
-      ).then(r => r.arrayBuffer());
-
-      const logoImg = await pdf.embedPng(logoBuffer);
-
-      // ── Draw QR ─────────────────────────────
-      page.drawImage(qrImg, {
-        x,
-        y: y - QR_SIZE_PT,
-        width: QR_SIZE_PT,
-        height: QR_SIZE_PT,
-      });
+      const moduleSize = QR_SIZE_PT / matrix.length;
+      for (let row = 0; row < matrix.length; row++) {
+        for (let col = 0; col < matrix.length; col++) {
+          if (matrix[row][col]) {
+            page.drawRectangle({
+              x: x + col * moduleSize,
+              y: y - QR_SIZE_PT + row * moduleSize,
+              width: moduleSize,
+              height: moduleSize,
+              color: rgb(0, 0, 0),
+            });
+          }
+        }
+      }
 
       // ── Logo background (white safety zone) ─
       const logoBgSize = LOGO_SIZE_PT + 3;
       const radius = logoBgSize / 2;
       page.drawCircle({
-        x: x + (QR_SIZE_PT) / 2,
-        y: y - (QR_SIZE_PT) / 2,
+        x: x + QR_SIZE_PT / 2,
+        y: y - QR_SIZE_PT / 2,
         size: radius,
         color: rgb(1, 1, 1),
       });
 
       // ── Draw logo centered ──────────────────
+      const logoBuffer = await fetch(QR_TYPE_REGISTRY[type].image).then(r => r.arrayBuffer());
+      const logoImg = await pdf.embedPng(logoBuffer);
+
       page.drawImage(logoImg, {
         x: x + (QR_SIZE_PT - LOGO_SIZE_PT) / 2,
         y: y - (QR_SIZE_PT + LOGO_SIZE_PT) / 2,
@@ -69,24 +71,24 @@ export class QrCodesPdfService {
 
       // ── Grid positioning ────────────────────
       x += QR_SIZE_PT + 20;
-
       if (x + QR_SIZE_PT > width) {
         x = 40;
         y -= QR_SIZE_PT + 20;
       }
 
-      this.progressService.set(Math.ceil(i / qrImages.length * 100));
+      this.progressService.set(Math.ceil(((i + 1) / qrCodesMatrixes.length) * 100));
     }
 
+    // ── Save PDF ─────────────────────────────
     if (Capacitor.isNativePlatform()) {
       const pdfBase64 = await pdf.saveAsBase64();
-      const mobileFileUrl: string = await this.saveFile("Generated QRCodes for " + type + ".pdf", pdfBase64);
-
+      await this.saveFile(`Generated QRCodes for ${type}.pdf`, pdfBase64);
     } else {
       const bytes = await pdf.save();
       this.downloadOnDesktop(bytes);
     }
 
+    this.progressService.complete();
   }
 
   private async saveFile(fileName: string, base64: string): Promise<string> {

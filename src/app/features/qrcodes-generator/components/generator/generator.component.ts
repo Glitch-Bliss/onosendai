@@ -33,17 +33,16 @@ export class QrCodeGeneratorComponent {
   private pdf = inject(QrCodesPdfService);
 
   async generateAndDownload(type: ElementType, quantity: number = 10) {
-    const qrs: QrItem[] = this.generateQrCodesModels(type, quantity);
-    const images: string[] = await this.generator.generateQrCodesDataURIBatch(qrs);
-    await this.pdf.export(images, type);
+    const generatedModels = this.generateQrCodesModels(type, quantity);
+    const qrCodesImages = await this.generator.generateQrCodesDataUriByWorker(generatedModels);
+    console.info("qrCodesImages", qrCodesImages)
+    this.pdf.export(qrCodesImages, type);
   }
 
-  private generateQrCodesModels(type: ElementType, quantity: number = 10) {
-    return Array.from({ length: quantity }, (_, i) => ({
-      uid: nanoid(10),
-      userid: nanoid(12),
-      type: type
-    }));
+  private generateQrCodesModels(type: ElementType, quantity: number = 10): string[] {
+    return Array.from({ length: quantity }, (_, i) => (
+      `${nanoid(12)}|${nanoid(10)}|${QR_TYPE_REGISTRY[type].qrcodeIndex}`
+    ));
   }
 }
 
