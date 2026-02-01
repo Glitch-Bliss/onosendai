@@ -1,13 +1,22 @@
-li {
-    background: #b4af9a;
-    display: inline-block;
-    padding: 3px;
-    border: solid 1px #57544a;
-    margin: 2px;
+ul {
+    display: flex;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    gap: 3px;
 
-    a {
-        font-family: "Manrope", sans-serif;
-        text-decoration: none;
-        font-weight: bold;
+    li {
+        background: #b4af9a;
+        display: flex;
+        padding: 3px;
+        border: solid 1px #57544a;
+        justify-content: center;
+        align-items: center;
+
+        a {
+            font-family: "Manrope", sans-serif;
+            text-decoration: none;
+            font-weight: bold;
+        }
     }
 }

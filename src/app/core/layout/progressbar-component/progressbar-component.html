@@ -1,4 +1,2 @@
-@if(progressService.generating()) {
-<div class="bar" [style.width.%]="progressService.progress()">{{progressService.currentLabel()}}
-    {{progressService.progress()}}%</div>
-}
+<div class="bar" [style.width.%]="notification()?.value">{{notification()?.message}}
+    {{notification()?.value}}%</div>

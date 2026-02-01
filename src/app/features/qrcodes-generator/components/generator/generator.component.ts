@@ -1,13 +1,11 @@
 import { Component, inject, signal, WritableSignal } from '@angular/core';
 import { ElementType } from '../../../../core/enums/element-type.enum';
-import { v4 as uuidv4 } from 'uuid';
 import { QrCodesService } from '../../services/qr-codes.service';
-import { QrItem, QrItemModel } from '../../models/qr-item.model';
 import { QR_TYPE_REGISTRY } from '../../../../core/registries/qr-type.registry';
 import { QrCodesPdfService } from '../../services/qr-codes-pdf.service';
 import { nanoid } from 'nanoid';
 import { ButtonComponent } from "../../../../shared/components/button-component/button-component";
-import { ProgressService } from '../../../../core/services/progression.service';
+import { NotificationService } from '../../../../core/services/notification.service';
 
 // qr-preview.component.ts
 type QrCodeView = {
@@ -24,6 +22,8 @@ type QrCodeView = {
 })
 export class QrCodeGeneratorComponent {
 
+  notificationService = inject(NotificationService);
+
   ElementType = ElementType;
   codesGenerated: WritableSignal<QrCodeView[]> = signal([]);
   elementsNumber = Array.from({ length: 10 });
@@ -35,7 +35,6 @@ export class QrCodeGeneratorComponent {
   async generateAndDownload(type: ElementType, quantity: number = 10) {
     const generatedModels = this.generateQrCodesModels(type, quantity);
     const qrCodesImages = await this.generator.generateQrCodesDataUriByWorker(generatedModels);
-    console.info("qrCodesImages", qrCodesImages)
     this.pdf.export(qrCodesImages, type);
   }
 

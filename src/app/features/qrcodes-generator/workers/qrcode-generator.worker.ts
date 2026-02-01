@@ -1,5 +1,4 @@
 /// <reference lib="webworker" />
-import QRCode from 'qrcode';
 
 import { Encoded, Encoder, Byte } from '@nuintun/qrcode';
 
@@ -16,7 +15,6 @@ addEventListener('message', async ({ data }) => {
 
     imagesEncoded.push(encoded);
 
-    // Progress update
     postMessage({
       type: 'progress',
       value: Math.round(((i + 1) / data.length) * 100),

@@ -1,18 +1,20 @@
 import { Component, inject, input } from '@angular/core';
-import { ProgressService } from '../../services/progression.service';
+import { NotificationService } from '../../services/notification.service';
+import { AppNotification, ProgressNotification } from '../../interfaces/notification.interface';
 
 @Component({
   selector: 'app-progressbar-component',
   imports: [],
   templateUrl: './progressbar-component.html',
   styleUrl: './progressbar-component.scss',
-   host: {
-   role: 'progressbar',
-   'aria-valuemin': '0',
-   'aria-valuemax': '100',
-   '[attr.aria-valuenow]': 'progressService.progress()',
- }
+  host: {
+    role: 'progressbar',
+    'aria-valuemin': '0',
+    'aria-valuemax': '100',
+    '[attr.aria-valuenow]': 'notification()?.value',
+  }
 })
 export class ProgressbarComponent {
-  progressService = inject(ProgressService);
+  notification = input<AppNotification>();
+  progressService = inject(NotificationService);
 }

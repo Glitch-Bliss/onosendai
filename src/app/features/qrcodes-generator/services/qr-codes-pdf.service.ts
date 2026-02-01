@@ -2,12 +2,9 @@ import { inject, Injectable } from '@angular/core';
 import { PDFDocument, rgb } from 'pdf-lib';
 import { ElementType } from '../../../core/enums/element-type.enum';
 import { QR_TYPE_REGISTRY } from '../../../core/registries/qr-type.registry';
-import { ProgressService } from '../../../core/services/progression.service';
-import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
-import { Share } from '@capacitor/share';
+import { NotificationService } from '../../../core/services/notification.service';
+import { Filesystem, Directory } from '@capacitor/filesystem';
 import { Capacitor } from '@capacitor/core';
-import { FileTransfer } from '@capacitor/file-transfer';
-import { Encoded } from '@nuintun/qrcode';
 
 const CM_TO_PT = 28.35;
 const QR_SIZE_PT = 2 * CM_TO_PT;
@@ -17,13 +14,13 @@ const LOGO_SIZE_PT = QR_SIZE_PT * LOGO_RATIO;
 @Injectable({ providedIn: 'root' })
 export class QrCodesPdfService {
 
-  progressService = inject(ProgressService);
+  progressService = inject(NotificationService);
   async export(qrCodesMatrixes: number[][][], type: ElementType) {
 
-    this.progressService.start("Generating codes");
+    this.progressService.startProgress("Generating codes");
 
     const pdf = await PDFDocument.create();
-    this.progressService.set(10);
+    this.progressService.updateProgress(10);
     const page = pdf.addPage();
     const { width, height } = page.getSize();
 
@@ -76,7 +73,7 @@ export class QrCodesPdfService {
         y -= QR_SIZE_PT + 20;
       }
 
-      this.progressService.set(Math.ceil(((i + 1) / qrCodesMatrixes.length) * 100));
+      this.progressService.updateProgress(Math.ceil(((i + 1) / qrCodesMatrixes.length) * 100));
     }
 
     // ── Save PDF ─────────────────────────────
@@ -85,10 +82,8 @@ export class QrCodesPdfService {
       await this.saveFile(`Generated QRCodes for ${type}.pdf`, pdfBase64);
     } else {
       const bytes = await pdf.save();
-      this.downloadOnDesktop(bytes);
+      await this.downloadOnDesktop(bytes, "qr-codes-" + type);
     }
-
-    this.progressService.complete();
   }
 
   private async saveFile(fileName: string, base64: string): Promise<string> {
@@ -97,21 +92,42 @@ export class QrCodesPdfService {
       data: base64,
       directory: Directory.Documents,
     });
-    this.progressService.complete();
+    this.progressService.completeProgress();
     return result.uri;
   }
 
-  private async downloadOnDesktop(bytes: Uint8Array) {
-    const blob = new Blob([new Uint8Array(bytes)], {
-      type: 'application/pdf',
-    });
+  private async downloadOnDesktop(bytes: Uint8Array, name: string) {
+    // Modern File System Access API
+    if ('showSaveFilePicker' in window) {
+      try {
+        const handle = await (window as any).showSaveFilePicker({
+          suggestedName: name + '.pdf',
+          types: [
+            {
+              description: 'PDF Document',
+              accept: { 'application/pdf': ['.pdf'] },
+            },
+          ],
+        });
 
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = 'qr-codes.pdf';
-    link.click();
+        const writable = await handle.createWritable();
+        await writable.write(bytes);
+        await writable.close();
+        console.info('PDF saved successfully!');
+      } catch (err) {
+        console.error('Save cancelled or failed:', err);
+      }
+    } else {
+      // Fallback for older browsers: force download (opens in-browser temporarily)
+      const blob = new Blob([new Uint8Array(bytes)], { type: 'application/pdf' });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = name + '.pdf'; // keep the .pdf name
+      link.click();
+      URL.revokeObjectURL(link.href);
+    }
 
-    this.progressService.complete();
-    URL.revokeObjectURL(link.href);
+    this.progressService.completeProgress();
   }
+
 }

@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { ProgressbarComponent } from "../progressbar-component/progressbar-component";
+import { NotificationsComponent } from "../notifications-component/notifications-component";
 
 @Component({
   standalone: true,
   selector: 'app-footer',
-  imports: [ProgressbarComponent],
+  imports: [NotificationsComponent],
   templateUrl: './footer.html',
   styleUrl: './footer.scss',
 })
