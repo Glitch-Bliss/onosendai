@@ -1,18 +1,22 @@
 import { Injectable, signal, WritableSignal } from '@angular/core';
 import { AppNotification } from '../interfaces/notification.interface';
+import { nanoid } from 'nanoid';
+import { NotificationType } from '../enums/notification-type.enum';
 
 @Injectable({ providedIn: 'root' })
 export class NotificationService {
 
   private readonly _notifications = signal<AppNotification[]>([]);
   readonly notifications = this._notifications.asReadonly();
+  private lastValue = 0;
+  private lastUpdate = 0;
 
   // ── Public API ─────────────────────────────
 
   info(message: string) {
     this.add({
       id: crypto.randomUUID(),
-      type: 'info',
+      type: NotificationType.INFO,
       message,
     });
   }
@@ -20,7 +24,7 @@ export class NotificationService {
   error(message: string) {
     this.add({
       id: crypto.randomUUID(),
-      type: 'error',
+      type: NotificationType.ERROR,
       message,
     });
   }
@@ -28,37 +32,55 @@ export class NotificationService {
   success(message: string) {
     this.add({
       id: crypto.randomUUID(),
-      type: 'success',
+      type: NotificationType.SUCCESS,
       message,
     });
   }
 
-  startProgress(message = 'Processing…') {
-    this.add({
-      id: 'global-progress',
-      type: 'progress',
+  startProgress(message = 'Processing…'): AppNotification {
+    const progressNotification = {
+      id: nanoid(2),
+      type: NotificationType.PROGRESS,
       value: 0,
       message: message,
-    });
+    };
+
+    this.add(progressNotification);
+    return progressNotification;
   }
 
-  updateProgress(value: number) {
-    const currentProgressNotification = this._notifications().find(n => n.type === "progress");
+  updateProgress(notification: AppNotification, valueToAdd: number) {
 
-    if (currentProgressNotification != undefined) {
-      const currentValue = currentProgressNotification.value ? currentProgressNotification.value + value : value;
-      this.upsert({
-        id: currentProgressNotification.id,
-        type: 'progress',
-        value: Math.min(Math.max(currentValue, 0), 100),
-        message: currentProgressNotification.message
-      });
+    const value = notification.value ?? 0;
+
+    //Adds a little bit of throttling
+    const now = performance.now();
+
+    if (
+      notification.value === 100 ||
+      now - this.lastUpdate > 80 || // ~12 FPS
+      Math.abs(value - this.lastValue) >= 2
+    ) {
+      this.lastValue = value;
+      this.lastUpdate = now;
+
+      const currentProgressNotification = this._notifications().find(n => n.id === notification.id);
+
+      if (currentProgressNotification != undefined) {
+        const currentValue = value + valueToAdd;
+        this.upsert({
+          id: currentProgressNotification.id,
+          type: NotificationType.PROGRESS,
+          value: Math.min(Math.max(currentValue, 0), 100),
+          message: currentProgressNotification.message
+        });
+      }
     }
   }
 
-  completeProgress() {
+  complete(notificationProgress:AppNotification) {
     this._notifications.update(list =>
-      list.filter(n => n.type !== 'progress')
+      list.filter(n => n.id !== notificationProgress.id)
     );
   }
 

@@ -1,7 +1,4 @@
 import { Injectable } from '@angular/core';
-import { QR_TYPE_REGISTRY } from '../../../core/registries/qr-type.registry';
-import { ElementType } from '../../../core/enums/element-type.enum';
-import { Encoded } from '@nuintun/qrcode';
 
 @Injectable({ providedIn: 'root' })
 export class QrCodesService {

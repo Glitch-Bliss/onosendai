@@ -9,7 +9,7 @@ addEventListener('message', async ({ data }) => {
     const qr = data[i];
 
     const encoder = new Encoder({
-      level: 'M', // L, M, Q, H
+      level: 'H', // L, M, Q, H
     });
     const encoded = encoder.encode(new Byte(qr));
 

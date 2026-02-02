@@ -4,7 +4,6 @@ import {
   BarcodeScanner,
   BarcodeFormat,
   LensFacing,
-  PermissionStatus,
   BarcodesScannedEvent,
   Barcode,
   CameraPermissionState,

@@ -1,18 +1,21 @@
-import { Component, inject, Signal, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { QrcodeScannerService } from '../../../../core/services/qrcode-scanner.service';
+import { ButtonComponent } from "../../../../shared/components/button-component/button-component";
+import { ScanService } from '../../../../core/services/scan.service';
 
 @Component({
   standalone: true,
   selector: 'app-scanners-demo',
-  imports: [],
+  imports: [ButtonComponent],
   templateUrl: './demo.html',
   styleUrl: './demo.scss',
 })
 export class QrcodeDemo {
 
-  _scannedCode = signal<string | undefined>(undefined);
+  scanFallbackModalService = inject(ScanService);
+  qrService = inject(QrcodeScannerService);
 
-  constructor(public qrService: QrcodeScannerService) { }
+  _scannedCode = signal<string | undefined>(undefined);
 
   async scanWithGoogle() {
     if (await this.qrService.isGoogleBarcodeScannerModuleAvailable()) {
@@ -23,7 +26,8 @@ export class QrcodeDemo {
   }
 
   scan() {
-    this.qrService.startScan('single');
+    this.scanFallbackModalService.scanModalShown.set(true);
+    //this.qrService.startScan('single');
   }
 
   reset() {

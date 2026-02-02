@@ -1,4 +1,4 @@
-import { Component, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { NotificationService } from '../../services/notification.service';
 import { AppNotification, ProgressNotification } from '../../interfaces/notification.interface';
 
@@ -7,14 +7,11 @@ import { AppNotification, ProgressNotification } from '../../interfaces/notifica
   imports: [],
   templateUrl: './progressbar-component.html',
   styleUrl: './progressbar-component.scss',
-  host: {
-    role: 'progressbar',
-    'aria-valuemin': '0',
-    'aria-valuemax': '100',
-    '[attr.aria-valuenow]': 'notification()?.value',
-  }
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProgressbarComponent {
   notification = input<AppNotification>();
   progressService = inject(NotificationService);
+  scale = computed(() => (this.notification()?.value ?? 0) / 100);
+
 }

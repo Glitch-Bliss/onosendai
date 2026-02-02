@@ -8,7 +8,7 @@
     <div class="button_list">
         @for(type of typesButton; track $index) {
         <app-button-component (clicked)="generateAndDownload(type, 30)"
-            buttonText="Generate {{type}} QR codes"></app-button-component>
+            buttonText="Generate {{type}} QR codes" [isDisabled]="isGenerating()"></app-button-component>
         }
     </div>
 </div>

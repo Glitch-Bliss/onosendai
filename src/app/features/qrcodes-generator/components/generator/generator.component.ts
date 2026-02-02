@@ -1,4 +1,4 @@
-import { Component, inject, signal, WritableSignal } from '@angular/core';
+import { Component, inject, Signal, signal, WritableSignal } from '@angular/core';
 import { ElementType } from '../../../../core/enums/element-type.enum';
 import { QrCodesService } from '../../services/qr-codes.service';
 import { QR_TYPE_REGISTRY } from '../../../../core/registries/qr-type.registry';
@@ -28,14 +28,25 @@ export class QrCodeGeneratorComponent {
   codesGenerated: WritableSignal<QrCodeView[]> = signal([]);
   elementsNumber = Array.from({ length: 10 });
   typesButton = [ElementType.BUILDING, ElementType.NPC, ElementType.OBJECT, ElementType.SCATTER, ElementType.VEHICLE];
+  isGenerating: WritableSignal<boolean> = signal<boolean>(false);
 
   private generator = inject(QrCodesService);
   private pdf = inject(QrCodesPdfService);
 
   async generateAndDownload(type: ElementType, quantity: number = 10) {
+    this.isGenerating.set(true);
+
+    const notificationProgress = this.notificationService.startProgress("Generating codes");
     const generatedModels = this.generateQrCodesModels(type, quantity);
     const qrCodesImages = await this.generator.generateQrCodesDataUriByWorker(generatedModels);
-    this.pdf.export(qrCodesImages, type);
+    this.pdf.export(qrCodesImages, type, (value, isProgressing) => {
+      if (isProgressing) {
+        this.notificationService.updateProgress(notificationProgress, value);
+      } else {
+         this.isGenerating.set(false);
+        this.notificationService.complete(notificationProgress);
+      }
+    });
   }
 
   private generateQrCodesModels(type: ElementType, quantity: number = 10): string[] {

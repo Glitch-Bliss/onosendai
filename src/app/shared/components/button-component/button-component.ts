@@ -9,5 +9,6 @@ import { Component, input, output } from '@angular/core';
 })
 export class ButtonComponent {
   clicked = output<void>();
-  buttonText = input<string>();
+  buttonText = input<string>("");
+  isDisabled = input<boolean>(false);
 }

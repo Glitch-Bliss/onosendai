@@ -1,2 +1,6 @@
-<div class="bar" [style.width.%]="notification()?.value">{{notification()?.message}}
-    {{notification()?.value}}%</div>
+@if (notification(); as n) {
+<div class="bar">
+    <div class="bar-fill" [style.transform]="'scaleX(' + scale() + ')'"></div>
+    <div class="bar-text"> {{ n.message }} {{ n.value }}%</div>
+</div>
+}

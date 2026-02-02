@@ -1,14 +1,42 @@
 :host {
-  display: block;
-  width: 100%;
+    display: block;
+    width: 100%;
 }
-
 
 .bar {
     outline-offset: -3px;
-    display: flex;
     height: 30px;
+    overflow: hidden;
     background: #ccc8b1;
-    outline: 3px solid #57544a;
-    min-width: fit-content;
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border: solid 1px #57544a;
+
+    .bar-fill {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        transform-origin: left center; // important for scaleX
+        transform: scaleX(0); // initial scale
+        transition: transform 120ms linear;
+        will-change: transform;
+        z-index: 1;
+        background: #57544a;
+    }
+
+    .bar-text {
+        line-height: 30px;
+        position: relative; // stays on top of fill
+        width: 100%;
+        height: 100%;
+        text-align: left;
+        font-weight: bold;
+        color: #fff; // text on top of blue fill
+        z-index: 2;
+        padding-left: 10px;
+    }
+
 }

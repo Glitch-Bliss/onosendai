@@ -1,8 +1,7 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { PDFDocument, rgb } from 'pdf-lib';
 import { ElementType } from '../../../core/enums/element-type.enum';
 import { QR_TYPE_REGISTRY } from '../../../core/registries/qr-type.registry';
-import { NotificationService } from '../../../core/services/notification.service';
 import { Filesystem, Directory } from '@capacitor/filesystem';
 import { Capacitor } from '@capacitor/core';
 
@@ -14,13 +13,13 @@ const LOGO_SIZE_PT = QR_SIZE_PT * LOGO_RATIO;
 @Injectable({ providedIn: 'root' })
 export class QrCodesPdfService {
 
-  progressService = inject(NotificationService);
-  async export(qrCodesMatrixes: number[][][], type: ElementType) {
-
-    this.progressService.startProgress("Generating codes");
+  async export(
+    qrCodesMatrixes: number[][][]
+    , type: ElementType,
+    onProgress?: (value: number, isProgressing: boolean) => void) {
 
     const pdf = await PDFDocument.create();
-    this.progressService.updateProgress(10);
+    onProgress?.(0, true);
     const page = pdf.addPage();
     const { width, height } = page.getSize();
 
@@ -73,16 +72,18 @@ export class QrCodesPdfService {
         y -= QR_SIZE_PT + 20;
       }
 
-      this.progressService.updateProgress(Math.ceil(((i + 1) / qrCodesMatrixes.length) * 100));
+      onProgress?.(Math.ceil(((i + 1) / qrCodesMatrixes.length) * 100), true);
     }
 
     // ── Save PDF ─────────────────────────────
     if (Capacitor.isNativePlatform()) {
       const pdfBase64 = await pdf.saveAsBase64();
       await this.saveFile(`Generated QRCodes for ${type}.pdf`, pdfBase64);
+      onProgress?.(100, false);
     } else {
       const bytes = await pdf.save();
       await this.downloadOnDesktop(bytes, "qr-codes-" + type);
+      onProgress?.(100, false);
     }
   }
 
@@ -92,7 +93,6 @@ export class QrCodesPdfService {
       data: base64,
       directory: Directory.Documents,
     });
-    this.progressService.completeProgress();
     return result.uri;
   }
 
@@ -126,8 +126,6 @@ export class QrCodesPdfService {
       link.click();
       URL.revokeObjectURL(link.href);
     }
-
-    this.progressService.completeProgress();
   }
 
 }
