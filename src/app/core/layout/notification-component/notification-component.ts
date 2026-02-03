@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
+import { AppNotification } from '../../interfaces/notification.interface';
 
 @Component({
   selector: 'app-notification-component',
@@ -7,5 +8,5 @@ import { Component } from '@angular/core';
   styleUrl: './notification-component.scss',
 })
 export class NotificationComponent {
-
+  notification = input<AppNotification>();
 }

@@ -6,12 +6,19 @@ ul {
     gap: 3px;
 
     li {
-        background: #b4af9a;
+        background: #57544a;
         display: flex;
-        padding: 3px;
-        border: solid 1px #57544a;
+        padding: 5px;
         justify-content: center;
         align-items: center;
+        color: #d1cdb7;
+        cursor: pointer;
+
+        &:hover {
+            color: #57544a;
+            background: #d1cdb7;
+            transition: background-color 1000ms linear;
+        }
 
         a {
             font-family: "Manrope", sans-serif;

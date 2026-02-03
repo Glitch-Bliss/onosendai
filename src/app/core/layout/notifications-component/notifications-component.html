@@ -1,8 +1,11 @@
 <div class="notifications">
-@for(notification of notificationService.notifications(); track notification.id){
+    @for(notification of notificationService.notifications(); track notification.id){
 
-    @if(notification.type === "progress"){
-        <app-progressbar-component [notification]="notification"></app-progressbar-component>
+        @if(notification.type === "progress"){
+            <app-progressbar-component [notification]="notification"></app-progressbar-component>
+        }@else {
+            <app-notification-component [notification]="notification"></app-notification-component>
+        }
+
     }
-}
 </div>

@@ -1,0 +1,37 @@
+.icon {
+    height: 30px;
+    width: 30px;
+    padding: 0 10px;
+    margin: 0;
+
+    background-repeat: no-repeat;
+    background-position: center;
+    transition: 0.2s linear;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #d1cdb7;
+    }
+}
+
+
+.icon-eye {
+    background-image: url(/assets/icons/eye.svg);
+}
+
+.icon-share {
+    background-image: url(/assets/icons/share.svg);
+}
+
+:host {
+    width: 100%;
+    display: flex;
+    height: 30;
+    line-height: 30px;
+    background: #b4af9a;
+    align-items: center;
+}
+
+p {
+    margin: 0 10px;
+}

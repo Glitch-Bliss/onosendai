@@ -12,7 +12,7 @@ import { ScanService } from '../../../../core/services/scan.service';
 })
 export class QrcodeDemo {
 
-  scanFallbackModalService = inject(ScanService);
+  scanService = inject(ScanService);
   qrService = inject(QrcodeScannerService);
 
   _scannedCode = signal<string | undefined>(undefined);
@@ -26,8 +26,7 @@ export class QrcodeDemo {
   }
 
   scan() {
-    this.scanFallbackModalService.scanModalShown.set(true);
-    //this.qrService.startScan('single');
+    this.scanService.scanModalShown.set(true);
   }
 
   reset() {

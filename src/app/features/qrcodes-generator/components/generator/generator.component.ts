@@ -33,6 +33,12 @@ export class QrCodeGeneratorComponent {
   private generator = inject(QrCodesService);
   private pdf = inject(QrCodesPdfService);
 
+  ngAfterViewInit() {
+    this.notificationService.info("Test test")
+    this.notificationService.info("Test 2")
+    this.notificationService.startProgress("progress")
+  }
+
   async generateAndDownload(type: ElementType, quantity: number = 10) {
     this.isGenerating.set(true);
 
@@ -43,7 +49,7 @@ export class QrCodeGeneratorComponent {
       if (isProgressing) {
         this.notificationService.updateProgress(notificationProgress, value);
       } else {
-         this.isGenerating.set(false);
+        this.isGenerating.set(false);
         this.notificationService.complete(notificationProgress);
       }
     });
