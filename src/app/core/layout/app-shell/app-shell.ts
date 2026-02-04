@@ -8,6 +8,7 @@ import { ScanService } from '../../services/scan.service';
 @Component({
   standalone: true,
   selector: 'app-shell',
+  styleUrl: './app-shell.scss',
   imports: [MainMenuComponent, RouterOutlet, Footer, ScanFallbackModal],
   templateUrl: './app-shell.html'
 })

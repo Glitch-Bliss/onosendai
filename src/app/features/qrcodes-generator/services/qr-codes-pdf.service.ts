@@ -4,6 +4,8 @@ import { ElementType } from '../../../core/enums/element-type.enum';
 import { QR_TYPE_REGISTRY } from '../../../core/registries/qr-type.registry';
 import { Filesystem, Directory } from '@capacitor/filesystem';
 import { Capacitor } from '@capacitor/core';
+import { FileViewer } from '@capacitor/file-viewer';
+import { Share } from '@capacitor/share';
 
 const CM_TO_PT = 28.35;
 const QR_SIZE_PT = 2 * CM_TO_PT;
@@ -12,6 +14,8 @@ const LOGO_SIZE_PT = QR_SIZE_PT * LOGO_RATIO;
 
 @Injectable({ providedIn: 'root' })
 export class QrCodesPdfService {
+
+  private generatedFilePath: string | undefined;
 
   async export(
     qrCodesMatrixes: number[][][]
@@ -78,7 +82,7 @@ export class QrCodesPdfService {
     // ── Save PDF ─────────────────────────────
     if (Capacitor.isNativePlatform()) {
       const pdfBase64 = await pdf.saveAsBase64();
-      await this.saveFile(`Generated QRCodes for ${type}.pdf`, pdfBase64);
+      this.generatedFilePath = await this.saveFile(`Generated QRCodes for ${type}.pdf`, pdfBase64);
       onProgress?.(100, false);
     } else {
       const bytes = await pdf.save();
@@ -87,6 +91,9 @@ export class QrCodesPdfService {
     }
   }
 
+  /**
+   * Mobile Only
+   */
   private async saveFile(fileName: string, base64: string): Promise<string> {
     const result = await Filesystem.writeFile({
       path: fileName,
@@ -126,6 +133,30 @@ export class QrCodesPdfService {
       link.click();
       URL.revokeObjectURL(link.href);
     }
+  }
+
+  /**
+   * Mobile Only
+   */
+  public async showGeneratedFile() {
+    if (!this.generatedFilePath) return;
+
+    await FileViewer.openDocumentFromLocalPath({
+      path: this.generatedFilePath,
+    });
+  }
+
+  /**
+ * Mobile Only
+ */
+  public async shareGeneratedFile() {
+    if (!this.generatedFilePath) return;
+
+    await Share.share({
+      title: 'Generated QR Codes for Onosendai',
+      text: 'Lo ! Qr Codes for playing Onosendai !',
+      url: this.generatedFilePath,
+    });
   }
 
 }

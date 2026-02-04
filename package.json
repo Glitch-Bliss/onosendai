@@ -38,6 +38,7 @@
     "@capacitor/cli": "^8.0.1",
     "@capacitor/core": "^8.0.1",
     "@capacitor/file-transfer": "^2.0.3",
+    "@capacitor/file-viewer": "^2.0.0",
     "@capacitor/filesystem": "^8.1.0",
     "@capacitor/ios": "^8.0.1",
     "@capacitor/share": "^8.0.0",

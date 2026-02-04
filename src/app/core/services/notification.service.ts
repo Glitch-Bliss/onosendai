@@ -21,6 +21,16 @@ export class NotificationService {
     });
   }
 
+  infoWithViewAndShare(message: string) {
+    this.add({
+      id: crypto.randomUUID(),
+      type: NotificationType.INFO,
+      view:true,
+      share:true,
+      message,
+    });
+  }
+
   error(message: string) {
     this.add({
       id: crypto.randomUUID(),
@@ -78,7 +88,7 @@ export class NotificationService {
     }
   }
 
-  complete(notificationProgress:AppNotification) {
+  complete(notificationProgress: AppNotification) {
     this._notifications.update(list =>
       list.filter(n => n.id !== notificationProgress.id)
     );

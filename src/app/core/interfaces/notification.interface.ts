@@ -9,6 +9,8 @@ export interface AppNotification {
     duration?: number;
     closable?: boolean;
     value?: number;
+    view?:boolean;
+    share?:boolean;
 }
 
 export interface ProgressNotification extends AppNotification {
