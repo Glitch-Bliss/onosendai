@@ -1,16 +1,11 @@
-<nav>
-  <ul>
-    @for (item of menu(); track item.id) {
-      <li>
-        <a
-          [routerLink]="item.route"
-          routerLinkActive="active"
-          [routerLinkActiveOptions]="{ exact: true }"
-        >
-          {{ item.label }}
-        </a>
-      </li>
-    }
-  </ul>
-  <app-language-switcher/>
+<app-button-component (click)="toggleOpen()" class="burger" buttonText="Menu"></app-button-component>
+@if(open()) {
+<nav class="menu">
+  @for (item of menu(); track item.id) {
+  <a (click)="closeMenu()" class="menu-item" [routerLink]="item.route" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" >
+    {{ item.label }}
+  </a>
+  }
+  <app-language-switcher class="menu-item" />
 </nav>
+}

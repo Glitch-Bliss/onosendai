@@ -27,3 +27,46 @@ ul {
         }
     }
 }
+
+.burger {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.burger span {
+    width: 25px;
+    height: 3px;
+    background: black;
+}
+
+.menu {
+    position: absolute;
+    display: flex;
+    background: white;
+    left: 0;
+    flex-direction: column;
+    z-index: 2;
+    width: 100%;
+    align-items: stretch;
+
+    .menu-item {
+        font-family: "Manrope", sans-serif;
+        text-decoration: none;
+        font-weight: bold;
+        background: #57544a;
+        display: flex;
+        padding: 5px;
+        justify-content: flex-start;
+        align-items: center;
+        color: #d1cdb7;
+        cursor: pointer;
+        text-align: left;
+
+        &:hover {
+            color: #57544a;
+            background: #d1cdb7;
+            transition: background-color 1000ms linear;
+        }
+    }
+}

@@ -33,7 +33,7 @@ export class ScanFallbackModal implements AfterViewInit, OnDestroy {
   public minZoomRatio: number | undefined;
   public maxZoomRatio: number | undefined;
 
-  private scanFallbackModalService = inject(ScanService);
+  private scanService = inject(ScanService);
 
   constructor(
     private readonly ngZone: NgZone,
@@ -66,7 +66,7 @@ export class ScanFallbackModal implements AfterViewInit, OnDestroy {
   }
 
   public async closeModal(): Promise<void> {
-    this.scanFallbackModalService.scanModalShown.set(false);
+    this.scanService.scanModalShown.set(false);
   }
 
   private async startScan(): Promise<void> {
@@ -130,7 +130,7 @@ export class ScanFallbackModal implements AfterViewInit, OnDestroy {
             }
           }
           listener.remove();
-          this.scanFallbackModalService.codeFound.set(firstBarcode.rawValue);
+          this.scanService.codeFound.set(firstBarcode.rawValue);
           this.closeModal();
         });
       },
