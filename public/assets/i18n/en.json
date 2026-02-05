@@ -1,0 +1,10 @@
+{
+  "APP": {
+    "TITLE": "QR Scanner",
+    "SCAN": "Scan",
+    "SCANNING": "Scanning..."
+  },
+    "TITLES": {
+    "GENERATOR":"GENERATOR"
+  }
+}

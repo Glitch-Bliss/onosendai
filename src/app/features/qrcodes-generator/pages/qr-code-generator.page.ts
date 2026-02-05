@@ -1,6 +1,8 @@
 import { CommonModule } from "@angular/common";
-import { Component, inject } from "@angular/core";
+import { Component, computed, inject, signal } from "@angular/core";
 import { QrCodeGeneratorComponent } from "../components/generator/generator.component";
+import { I18nService } from "../../../core/services/i18n.service";
+import { TranslateService } from "@ngx-translate/core";
 
 @Component({
     standalone: true,
@@ -10,10 +12,12 @@ import { QrCodeGeneratorComponent } from "../components/generator/generator.comp
         QrCodeGeneratorComponent
     ],
     template: `
-    <h1>@for (c of title; track $index) { <span>{{ c }}</span> }</h1>
+    <h1>@for (c of title(); track $index) { <span>{{ c }}</span> }</h1>
     <app-qr-code-generator/>
   `,
 })
 export class QrCodeGeneratorPage {
-    title = 'GENERATE';
+    i18nService = inject(I18nService);
+    title = this.i18nService.t('TITLES.GENERATOR');
+
 }

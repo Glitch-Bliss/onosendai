@@ -2,11 +2,12 @@ import { Component, Signal } from '@angular/core';
 import { MenuFacade } from './menu.facade';
 import { MenuItem } from './menu-item-model';
 import { RouterModule } from '@angular/router';
+import { LanguageSwitcherComponent } from "./language-switcher/language-switcher";
 
 @Component({
   standalone: true,
   selector: 'app-main-menu',
-  imports: [RouterModule],
+  imports: [RouterModule, LanguageSwitcherComponent],
   templateUrl: './main-menu.html',
   styleUrl: './main-menu.scss',
 })

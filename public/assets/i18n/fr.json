@@ -1,0 +1,11 @@
+{
+  "APP": {
+    "TITLE": "Onosendai",
+    "SCAN": "Scanner",
+    "SCANNING": "Scan en cours..."
+  },
+
+  "TITLES": {
+    "GENERATOR":"GENERATEUR"
+  }
+}

@@ -1,33 +1,3 @@
-.icon {
-    position: absolute;
-    height: 25px;
-    width: 25px;
-    padding: 0 10px;
-    margin: 0;
-
-    border-radius: 10px;
-    box-sizing: border-box;
-    border: solid 1px black;
-    background-repeat: no-repeat;
-    background-position: center;
-    transition: 0.2s linear;
-    cursor: pointer;
-
-    &:hover {
-        background-color: #d1cdb7;
-    }
-}
-
-
-.icon-eye {
-    background-image: url(/assets/icons/eye.svg);
-    right: 45px;
-}
-
-.icon-share {
-    background-image: url(/assets/icons/share.svg);
-    right: 10px;
-}
 
 :host {
     width: 100%;
@@ -36,8 +6,54 @@
     line-height: 30px;
     background: #b4af9a;
     align-items: center;
+    justify-content: space-between;
+}
+
+.icons {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+
+.icon {
+  height: 25px;
+  width: 25px;
+  padding: 0;
+  margin: 0;
+
+  border-radius: 10px;
+  box-sizing: border-box;
+  border: solid 1px black;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 14px 14px;
+
+  transition: background-color 0.2s linear;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #d1cdb7;
+  }
+}
+
+
+.icon-close {
+    background-image: url(/assets/icons/close.svg);
+}
+
+.icon-eye {
+    background-image: url(/assets/icons/eye.svg);
+}
+
+.icon-share {
+    background-image: url(/assets/icons/share.svg);
 }
 
 p {
-    margin: 0 10px;
+    margin: 0;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }

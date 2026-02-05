@@ -1,4 +1,6 @@
-<app-main-menu></app-main-menu>
+<header>
+    <app-main-menu></app-main-menu>
+</header>
 
 <main>
     <div class="root">
@@ -8,6 +10,6 @@
     </div>
 </main>
 @if(this.scanFallbackModalService.scanModalShown()) {
-<app-scan-fallback-modal></app-scan-fallback-modal>
+    <app-scan-fallback-modal></app-scan-fallback-modal>
 }
 <app-footer></app-footer>

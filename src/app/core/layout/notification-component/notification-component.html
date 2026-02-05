@@ -1,9 +1,13 @@
-@if(notification()?.view && capacitor.isNativePlatform()) {
-<div class="icon icon-eye" title="See the file" (click)="showFile()"></div>
-}
-
-@if(notification()?.share && capacitor.isNativePlatform()) {
-<div class="icon icon-share" title="Share the file" (click)="shareFile()"></div>
-}
-
 <p>{{notification()?.message}}</p>
+
+<div class="icons">
+    @if(notification()?.view && capacitor.isNativePlatform()) {
+    <div class="icon icon-eye" title="See the file" (click)="showFile()"></div>
+    }
+
+    @if(notification()?.share && capacitor.isNativePlatform()) {
+    <div class="icon icon-share" title="Share the file" (click)="shareFile()"></div>
+    }
+
+    <div class="icon icon-close" title="Close notification" (click)="close()"></div>
+</div>

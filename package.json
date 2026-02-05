@@ -43,6 +43,8 @@
     "@capacitor/ios": "^8.0.1",
     "@capacitor/share": "^8.0.0",
     "@capawesome/capacitor-torch": "^8.0.0",
+    "@ngx-translate/core": "^17.0.0",
+    "@ngx-translate/http-loader": "^17.0.0",
     "@nuintun/qrcode": "^5.0.2",
     "angularx-qrcode": "^21.0.4",
     "barcode-detector": "^3.0.8",

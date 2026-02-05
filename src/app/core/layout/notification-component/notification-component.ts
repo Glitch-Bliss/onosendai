@@ -2,6 +2,7 @@ import { Component, inject, input } from '@angular/core';
 import { AppNotification } from '../../interfaces/notification.interface';
 import { QrCodesPdfService } from '../../../features/qrcodes-generator/services/qr-codes-pdf.service';
 import { Capacitor } from '@capacitor/core';
+import { NotificationService } from '../../services/notification.service';
 
 
 @Component({
@@ -11,9 +12,17 @@ import { Capacitor } from '@capacitor/core';
   styleUrl: './notification-component.scss',
 })
 export class NotificationComponent {
+  notificationService = inject(NotificationService);
   notification = input<AppNotification>();
   pdfService = inject(QrCodesPdfService);
   capacitor = Capacitor;
+
+  close() {
+    const notification = this.notification();
+    if (!notification) return;
+
+    this.notificationService.complete(notification);
+  }
 
   /**
    * Used to show generated qrcode file from eye in notification
