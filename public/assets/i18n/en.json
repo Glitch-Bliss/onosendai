@@ -5,6 +5,7 @@
     "SCANNING": "Scanning..."
   },
     "TITLES": {
-    "GENERATOR":"GENERATOR"
+    "GENERATOR":"GENERATOR",
+    "GAMESLIST":"AVAILABLE GAMES"
   }
 }

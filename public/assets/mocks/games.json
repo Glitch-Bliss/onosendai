@@ -1,0 +1,139 @@
+{
+  "id": "games-collection-001",
+  "games": [
+    {
+      "id": "game-001",
+      "name": "Echoes of the Metro",
+      "date_played": "2026-01-28T20:45:00.000Z",
+      "date_created": "2026-01-15T18:12:00.000Z",
+      "owner": {
+        "id": "user-001",
+        "username": "glitchbliss",
+        "avatarUrl": "/assets/avatars/user-001.png"
+      },
+      "players": [
+        {
+          "id": "player-001",
+          "userId": "user-001",
+          "name": "The Operator",
+          "role": "Hacker",
+          "avatarUrl": "/assets/avatars/player-hacker.png"
+        }
+      ],
+      "scenario": {
+        "id": "scenario-001",
+        "name": "Abandoned Metro Station",
+        "description": "A descent into darkness beneath the city.",
+        "imageUrl": "/assets/images/scenarios/metro.png"
+      },
+      "crews": [
+        {
+          "id": "crew-001",
+          "name": "Metro Runners",
+          "description": "A small crew of scavengers and hackers surviving beneath the city.",
+          "imageUrl": "/assets/images/crews/metro-runners.png",
+          "profile": {
+            "heat": 12,
+            "morale": 65,
+            "reputation": "Low"
+          },
+          "agents": [
+            {
+              "id": "agent-001",
+              "name": "Iris",
+              "description": "A brilliant hacker with a taste for forbidden systems.",
+              "imageUrl": "/assets/images/agents/iris.png",
+              "actions": [
+                {
+                  "id": "action-001",
+                  "name": "System Scan",
+                  "description": "Scan nearby systems for vulnerabilities.",
+                  "imageUrl": "/assets/images/actions/scan.png",
+                  "type": "InteractionScan"
+                }
+              ],
+              "items": [
+                {
+                  "id": "item-001",
+                  "name": "Portable Terminal",
+                  "description": "A compact hacking terminal."
+                }
+              ],
+              "state": "Active",
+              "profile": {
+                "health": 85,
+                "stress": 20,
+                "skills": {
+                  "hacking": 4,
+                  "stealth": 2
+                }
+              },
+              "wounds": []
+            },
+            {
+              "id": "agent-002",
+              "name": "Kade",
+              "description": "A fast-moving scout used to navigating hostile zones.",
+              "imageUrl": "/assets/images/agents/kade.png",
+              "actions": [
+                {
+                  "id": "action-002",
+                  "name": "Silent Move",
+                  "description": "Move silently through dangerous areas.",
+                  "imageUrl": "/assets/images/actions/stealth.png",
+                  "type": "InteractionFig"
+                }
+              ],
+              "items": [],
+              "state": "Wounded",
+              "profile": {
+                "health": 40,
+                "stress": 35,
+                "skills": {
+                  "scouting": 4,
+                  "combat": 2
+                }
+              },
+              "wounds": [
+                {
+                  "id": "wound-001",
+                  "name": "Gunshot Wound",
+                  "severity": "Medium",
+                  "description": "Bullet lodged near the shoulder."
+                }
+              ]
+            }
+          ],
+          "date_last_edition": "2026-01-27T22:10:00.000Z",
+          "date_created": "2026-01-15T18:20:00.000Z",
+          "log": [
+            {
+              "id": "log-001",
+              "name": "Tunnel Cleared",
+              "description": "Security drones neutralized in tunnel sector C.",
+              "imageUrl": "/assets/images/logs/drone.png"
+            },
+            {
+              "id": "log-002",
+              "name": "Agent Injured",
+              "description": "Kade was wounded by an automated turret.",
+              "imageUrl": "/assets/images/logs/wound.png"
+            }
+          ],
+          "stash": [
+            {
+              "id": "item-010",
+              "name": "Medkit",
+              "description": "Restores agent health."
+            },
+            {
+              "id": "item-011",
+              "name": "Hacking Module",
+              "description": "Improves hacking success rate."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+<ul>
+    @for(game of this.api.games(); track game.id){
+    <li>
+        <a [routerLink]="['/game',game.id]" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            {{game.name}}
+        </a>
+    </li>
+    }
+</ul>

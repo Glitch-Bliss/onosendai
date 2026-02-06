@@ -41,8 +41,22 @@ export const routes: Routes = [
         id: 'scannersdemo',
         label: 'Demo of scanners',
         icon: 'qrcode',
-        order: 2,
+        order: 3,
         roles: [UserRole.USER, UserRole.ADMIN],
+      },
+    },
+  },
+  {
+    path: 'gameslist',
+    loadComponent: () =>
+      import('./features/game/pages/games-list.page')
+        .then(m => m.GamesListPage),
+    data: {
+      menu: {
+        id: 'gameslist',
+        label: 'Games List Page',
+        icon: 'home',
+        order: 4,
       },
     },
   }

@@ -6,6 +6,7 @@
   },
 
   "TITLES": {
-    "GENERATOR":"GENERATEUR"
+    "GENERATOR":"GENERATEUR",
+    "GAMESLIST":"PARTIES EN COURS"
   }
 }
