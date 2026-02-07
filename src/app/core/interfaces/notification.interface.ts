@@ -1,7 +1,7 @@
 import { NotificationType } from "../enums/notification-type.enum";
 
 // src/app/core/interfaces/notification.interface.ts
-export interface AppNotification {
+export interface IAppNotification {
     id: string;
     type: NotificationType;
     message?: string;
@@ -13,11 +13,11 @@ export interface AppNotification {
     share?:boolean;
 }
 
-export interface ProgressNotification extends AppNotification {
+export interface IProgressNotification extends IAppNotification {
 
 }
 
-export interface NotificationComplete {
+export interface INotificationComplete {
     isComplete: boolean;
     vueLink?: string;
     isShareable?: boolean

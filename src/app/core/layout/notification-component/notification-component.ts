@@ -1,5 +1,5 @@
 import { Component, inject, input } from '@angular/core';
-import { AppNotification } from '../../interfaces/notification.interface';
+import { IAppNotification } from '../../interfaces/notification.interface';
 import { QrCodesPdfService } from '../../../features/qrcodes-generator/services/qr-codes-pdf.service';
 import { Capacitor } from '@capacitor/core';
 import { NotificationService } from '../../services/notification.service';
@@ -13,7 +13,7 @@ import { NotificationService } from '../../services/notification.service';
 })
 export class NotificationComponent {
   notificationService = inject(NotificationService);
-  notification = input<AppNotification>();
+  notification = input<IAppNotification>();
   pdfService = inject(QrCodesPdfService);
   capacitor = Capacitor;
 

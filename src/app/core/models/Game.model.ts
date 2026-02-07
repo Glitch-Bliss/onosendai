@@ -2,6 +2,7 @@ import { Crew } from "./Crew.model";
 import { Scenario } from "./Scenario.model";
 import { User } from "./User.model";
 import { Player } from "./Player.model";
+import { LogEvent } from "./Log-event.model";
 
 export interface Game {
     id:string,
@@ -11,5 +12,5 @@ export interface Game {
     owner:User,
     players:Player[],
     scenario:Scenario,
-    crews:Crew[]
+    gamelog:LogEvent[]
 }

@@ -59,5 +59,11 @@ export const routes: Routes = [
         order: 4,
       },
     },
+  },
+  {
+    path: 'game/:id',
+    loadComponent: () =>
+      import('./features/game/pages/current-game.page')
+        .then(m => m.CurrentGamePage)
   }
 ];

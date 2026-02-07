@@ -5,14 +5,14 @@ import { GamesList } from "../components/games-list/games-list";
 
 @Component({
     standalone: true,
-    selector: 'app-games-page',
+    selector: 'app-current-games-page',
     imports: [
     CommonModule,
     GamesList
 ],
     template: `
     <h1>@for (c of title(); track $index) { <span>{{ c }}</span> }</h1>
-    <app-games-list/>
+    <app-current-games-list/>
   `,
 })
 export class GamesListPage {

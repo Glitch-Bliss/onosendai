@@ -1,6 +1,6 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { NotificationService } from '../../services/notification.service';
-import { AppNotification, ProgressNotification } from '../../interfaces/notification.interface';
+import { IAppNotification, IProgressNotification } from '../../interfaces/notification.interface';
 import { ProgressbarComponent } from "../progressbar-component/progressbar-component";
 import { NotificationComponent } from "../notification-component/notification-component";
 
@@ -13,5 +13,5 @@ import { NotificationComponent } from "../notification-component/notification-co
 
 export class NotificationsComponent {
   notificationService = inject(NotificationService);
-  readonly notifications = signal<AppNotification[]>([]);
+  readonly notifications = signal<IAppNotification[]>([]);
 }

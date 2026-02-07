@@ -1,0 +1,11 @@
+@if(players()) {
+<ul>
+    @for(player of players(); track $index) {
+    <li>
+        {{player.user.name}}
+    </li>
+    }
+</ul>
+}@else {
+Loading players…
+}

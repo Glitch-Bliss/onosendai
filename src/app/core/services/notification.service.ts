@@ -1,12 +1,12 @@
 import { Injectable, signal, WritableSignal } from '@angular/core';
-import { AppNotification } from '../interfaces/notification.interface';
+import { IAppNotification } from '../interfaces/notification.interface';
 import { nanoid } from 'nanoid';
 import { NotificationType } from '../enums/notification-type.enum';
 
 @Injectable({ providedIn: 'root' })
 export class NotificationService {
 
-  private readonly _notifications = signal<AppNotification[]>([]);
+  private readonly _notifications = signal<IAppNotification[]>([]);
   readonly notifications = this._notifications.asReadonly();
   private lastValue = 0;
   private lastUpdate = 0;
@@ -47,7 +47,7 @@ export class NotificationService {
     });
   }
 
-  startProgress(message = 'Processing…'): AppNotification {
+  startProgress(message = 'Processing…'): IAppNotification {
     const progressNotification = {
       id: nanoid(2),
       type: NotificationType.PROGRESS,
@@ -59,7 +59,7 @@ export class NotificationService {
     return progressNotification;
   }
 
-  updateProgress(notification: AppNotification, valueToAdd: number) {
+  updateProgress(notification: IAppNotification, valueToAdd: number) {
 
     const value = notification.value ?? 0;
 
@@ -88,7 +88,7 @@ export class NotificationService {
     }
   }
 
-  complete(notificationProgress: AppNotification) {
+  complete(notificationProgress: IAppNotification) {
     this._notifications.update(list =>
       list.filter(n => n.id !== notificationProgress.id)
     );
@@ -96,11 +96,11 @@ export class NotificationService {
 
   // ── Internals ──────────────────────────────
 
-  private add(n: AppNotification) {
+  private add(n: IAppNotification) {
     this._notifications.update(list => [...list, n]);
   }
 
-  private upsert(notification: AppNotification) {
+  private upsert(notification: IAppNotification) {
     this._notifications.update(list => {
       const index = list.findIndex(n => n.id === notification.id);
 

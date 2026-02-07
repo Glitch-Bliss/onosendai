@@ -4,5 +4,6 @@ import { User } from "./User.model"
 export interface Player {
     id:string,
     user:User,
-    crews:Crew[];
+    crew:Crew;
+    isactive?:boolean;
 }

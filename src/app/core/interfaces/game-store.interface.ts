@@ -4,15 +4,18 @@ import { Game } from '../models/Game.model';
 import { Crew } from '../models/Crew.model';
 import { Agent } from '../models/Agent.model';
 import { Item } from '../models/Item.model';
+import { Player } from '../models/Player.model';
 
-export interface GameApiInterface {
+export interface IGameStore {
   games: Signal<Game[]>;
+  currentGame: Signal<Game | null>;
+  currentPlayers: Signal<Player[] | null>;
   loading: Signal<boolean>;
 
   loadGames(): void;
-  getGameById(id: string): Signal<Game | undefined>;
-  getCrewById(gameId: string, crewId: string): Signal<Crew | undefined>;
-  getAgentById(gameId: string, crewId: string, agentId: string): Signal<Agent | undefined>;
+  getGameById(id: string): void;
+  getCrewById(gameId: string, crewId: string): Signal<Crew | null>;
+  getAgentById(gameId: string, crewId: string, agentId: string): Signal<Agent | null>;
 
   addGame(game: Game): void;
   addCrew(gameId: string, crew: Crew): void;

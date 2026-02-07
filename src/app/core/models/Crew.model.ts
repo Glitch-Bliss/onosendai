@@ -11,7 +11,7 @@ export interface Crew {
     profile:CrewProfile,
     agents:Agent[],
     date_last_edition:string,
-    date_created:string,
+    dateCreated:string,
     log:LogEvent[],
     stash:Item[]
 }

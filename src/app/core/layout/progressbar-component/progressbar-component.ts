@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { NotificationService } from '../../services/notification.service';
-import { AppNotification, ProgressNotification } from '../../interfaces/notification.interface';
+import { IAppNotification, IProgressNotification } from '../../interfaces/notification.interface';
 
 @Component({
   selector: 'app-progressbar-component',
@@ -10,7 +10,7 @@ import { AppNotification, ProgressNotification } from '../../interfaces/notifica
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProgressbarComponent {
-  notification = input<AppNotification>();
+  notification = input<IAppNotification>();
   progressService = inject(NotificationService);
   scale = computed(() => (this.notification()?.value ?? 0) / 100);
 
