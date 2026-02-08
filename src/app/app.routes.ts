@@ -65,5 +65,11 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/game/pages/current-game.page')
         .then(m => m.CurrentGamePage)
+  },
+  {
+    path: 'game/:id/player/:playerId',
+    loadComponent: () =>
+      import('./features/game/pages/current-game.page')
+        .then(m => m.CurrentGamePage)
   }
 ];

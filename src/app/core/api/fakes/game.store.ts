@@ -6,9 +6,8 @@ import { Game } from '../../models/Game.model';
 import { Crew } from '../../models/Crew.model';
 import { Agent } from '../../models/Agent.model';
 import { Item } from '../../models/Item.model';
-import { LogEvent } from '../../models/Log-event.model';
-import { StateAgent } from '../../enums/state-agent.enum';
 import { IGameStore } from '../../interfaces/game-store.interface';
+import { USER_STORE } from '../user.store.token';
 
 @Injectable({
   providedIn: 'root',
@@ -16,6 +15,7 @@ import { IGameStore } from '../../interfaces/game-store.interface';
 export class FakeGameStore implements IGameStore {
 
   private readonly http = inject(HttpClient);
+  private readonly userStore = inject(USER_STORE);
 
   /* ======================
      Internal signals
@@ -24,6 +24,7 @@ export class FakeGameStore implements IGameStore {
   private readonly _games = signal<Game[]>([]);
   private readonly _loading = signal(false);
   private readonly _currentGame = signal<Game | null>(null);
+  private readonly _currentPlayerId = signal<string | null>(null);
 
   /* ======================
      Public computed signals
@@ -33,6 +34,14 @@ export class FakeGameStore implements IGameStore {
   readonly loading = computed(() => this._loading());
   readonly currentGame = computed(() => this._currentGame());
   readonly currentPlayers = computed(() => this._currentGame()?.players ?? null);
+  readonly currentPlayer = computed(() => {
+    if (this._currentPlayerId()) {
+      return this.currentPlayers()?.find(player => player.id === this._currentPlayerId()) ?? null;
+    }
+
+    const current =  this.currentPlayers()?.find(player => player.user.id === this.userStore.user()?.id) ?? null;
+    return current || this.currentPlayers()?.at(0) || null;
+  });
 
   getCrewById(gameId: string, crewId: string): Signal<Crew | null> {
     throw new Error('Method not implemented.');
@@ -80,6 +89,10 @@ export class FakeGameStore implements IGameStore {
         this._currentGame.set(res);
         this._loading.set(false);
       });
+  }
+
+  setCurrentPlayer(id: string) {
+    this._currentPlayerId.set(id);
   }
 
 }

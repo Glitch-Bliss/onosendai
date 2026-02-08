@@ -27,11 +27,11 @@ export class FakeUserStore {
      Commands
      ========================= */
 
-  load(id: string) {
+  loadUser(id: string) {
     this._loading.set(true);
     this._error.set(null);
 
-    this.http.get<User>('/assets/mocks/games.json')
+    this.http.get<User>('/assets/mocks/user.json')
       .pipe(delay(400)) // simulate network
       .subscribe(res => {
         this._user.set(res);

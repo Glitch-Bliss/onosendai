@@ -3,10 +3,12 @@ import { IGameStore } from '../../../../core/interfaces/game-store.interface';
 import { GAME_STORE } from '../../../../core/api/game.store.token';
 import { Player } from '../../../../core/models/Player.model';
 import { CommonModule } from '@angular/common';
+import { Agents } from "../agents/agents";
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-players',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule, Agents],
   templateUrl: './players.html',
   styleUrl: './players.scss',
 })

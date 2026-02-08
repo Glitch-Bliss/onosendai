@@ -1,0 +1,7 @@
+<div>
+    @for(agent of currentPlayer()?.crew?.agents; track $index) {
+    <a>
+        {{agent.name}}
+    </a>
+    }
+</div>

@@ -1,11 +1,12 @@
 @if(players()) {
-<ul>
+<nav>
     @for(player of players(); track $index) {
-    <li>
+    <a [routerLink]="['/game', this.gameStore.currentGame()?.id, 'player', player.id]" routerLinkActive="active">
         {{player.user.name}}
-    </li>
+    </a>
     }
-</ul>
+</nav>
+<app-agents />
 }@else {
 Loading players…
 }

@@ -131,7 +131,113 @@
                 "name": "berenito",
                 "avatarUrl": "/assets/avatars/user-002.png"
             },
-            "name": "The Super Duper Ninja"
+            "name": "The Comandodo",
+            "crew": {
+                "id": "crew-002",
+                "name": "Chick Medics",
+                "description": "They want to save and kick asses",
+                "imageUrl": "/assets/images/crews/chiclk-medics.png",
+                "profile": {
+                    "heat": 12,
+                    "morale": 65,
+                    "reputation": "Low"
+                },
+                "agents": [
+                    {
+                        "id": "agent-003",
+                        "name": "Jojo Commando",
+                        "description": "A brilliant hacker with a taste for forbidden systems.",
+                        "imageUrl": "/assets/images/agents/jojo.png",
+                        "actions": [
+                            {
+                                "id": "action-001",
+                                "name": "System Scan",
+                                "description": "Scan nearby systems for vulnerabilities.",
+                                "imageUrl": "/assets/images/actions/scan.png",
+                                "type": "InteractionScan"
+                            }
+                        ],
+                        "items": [
+                            {
+                                "id": "item-001",
+                                "name": "Portable Terminal",
+                                "description": "A compact hacking terminal."
+                            }
+                        ],
+                        "state": "Active",
+                        "profile": {
+                            "health": 85,
+                            "stress": 20,
+                            "skills": {
+                                "hacking": 4,
+                                "stealth": 2
+                            }
+                        },
+                        "wounds": []
+                    },
+                    {
+                        "id": "agent-004",
+                        "name": "Peter Mc Galloway",
+                        "description": "FORCE PURE",
+                        "imageUrl": "/assets/images/agents/peter.png",
+                        "actions": [
+                            {
+                                "id": "action-002",
+                                "name": "Silent Move",
+                                "description": "Move silently through dangerous areas.",
+                                "imageUrl": "/assets/images/actions/stealth.png",
+                                "type": "InteractionFig"
+                            }
+                        ],
+                        "items": [],
+                        "state": "Wounded",
+                        "profile": {
+                            "health": 40,
+                            "stress": 35,
+                            "skills": {
+                                "scouting": 4,
+                                "combat": 2
+                            }
+                        },
+                        "wounds": [
+                            {
+                                "id": "wound-001",
+                                "name": "Gunshot Wound",
+                                "severity": "Medium",
+                                "description": "Bullet lodged near the shoulder."
+                            }
+                        ]
+                    }
+                ],
+                "date_last_edition": "2026-01-27T22:10:00.000Z",
+                "date_created": "2026-01-15T18:20:00.000Z",
+                "log": [
+                    {
+                        "id": "log-001",
+                        "name": "Tunnel Cleared",
+                        "description": "Security drones neutralized in tunnel sector C.",
+                        "imageUrl": "/assets/images/logs/drone.png"
+                    },
+                    {
+                        "id": "log-002",
+                        "name": "Agent Injured",
+                        "description": "Kade was wounded by an automated turret.",
+                        "imageUrl": "/assets/images/logs/wound.png"
+                    }
+                ],
+                "stash": [
+                    {
+                        "id": "item-010",
+                        "name": "Medkit",
+                        "description": "Restores agent health."
+                    },
+                    {
+                        "id": "item-011",
+                        "name": "Hacking Module",
+                        "description": "Improves hacking success rate."
+                    }
+                ]
+            }
         }
     ],
     "scenario": {

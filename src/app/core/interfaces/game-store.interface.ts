@@ -10,12 +10,14 @@ export interface IGameStore {
   games: Signal<Game[]>;
   currentGame: Signal<Game | null>;
   currentPlayers: Signal<Player[] | null>;
+  currentPlayer: Signal<Player | null>;
   loading: Signal<boolean>;
 
   loadGames(): void;
   getGameById(id: string): void;
   getCrewById(gameId: string, crewId: string): Signal<Crew | null>;
   getAgentById(gameId: string, crewId: string, agentId: string): Signal<Agent | null>;
+  setCurrentPlayer(id: string): void;
 
   addGame(game: Game): void;
   addCrew(gameId: string, crew: Crew): void;

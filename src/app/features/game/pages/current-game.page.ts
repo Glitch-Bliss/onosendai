@@ -10,6 +10,7 @@ import { GAME_STORE } from "../../../core/api/game.store.token";
 @Component({
   standalone: true,
   selector: 'app-current-games-page',
+  styleUrl: './styles/current-game.page.scss',
   imports: [
     CommonModule,
     Players,
@@ -24,11 +25,17 @@ export class CurrentGamePage {
 
   private readonly store = inject(GAME_STORE);
   private route = inject(ActivatedRoute);
-
   readonly gameId: string | null = this.route.snapshot.paramMap.get('id');
 
   constructor() {
-      this.store.getGameById(this.gameId!);
+    this.store.getGameById(this.gameId!);
+
+    this.route.paramMap.subscribe( params => {
+      const playerId = params.get('playerId');
+      if(playerId) {
+      this.store.setCurrentPlayer(playerId);
+      }
+    })
   }
 
 }

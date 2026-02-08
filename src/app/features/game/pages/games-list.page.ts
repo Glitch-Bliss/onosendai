@@ -6,10 +6,11 @@ import { GamesList } from "../components/games-list/games-list";
 @Component({
     standalone: true,
     selector: 'app-current-games-page',
+    styles: ':host{padding:2%}',
     imports: [
-    CommonModule,
-    GamesList
-],
+        CommonModule,
+        GamesList
+    ],
     template: `
     <h1>@for (c of title(); track $index) { <span>{{ c }}</span> }</h1>
     <app-current-games-list/>

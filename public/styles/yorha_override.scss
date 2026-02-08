@@ -27,7 +27,7 @@ body {
     .root {
         display: flex;
         flex-direction: column;
-        padding: 2% 4% 4%;
+        position: relative;
 
         .content {
             display: flex;

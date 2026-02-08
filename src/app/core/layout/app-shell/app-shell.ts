@@ -4,6 +4,7 @@ import { MainMenu as MainMenuComponent } from '../main-menu/main-menu';
 import { Footer } from "../footer/footer";
 import { ScanFallbackModal } from "../../scan-fallback-modal/scan-fallback-modal";
 import { ScanService } from '../../services/scan.service';
+import { USER_STORE } from '../../api/user.store.token';
 
 @Component({
   standalone: true,
@@ -15,5 +16,4 @@ import { ScanService } from '../../services/scan.service';
 export class AppShellComponent {
 
   scanFallbackModalService = inject(ScanService);
-
 }

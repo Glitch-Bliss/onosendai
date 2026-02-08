@@ -7,6 +7,7 @@ import { TranslateService } from "@ngx-translate/core";
 @Component({
     standalone: true,
     selector: 'app-qr-page',
+    styles:':host{padding:2%}',
     imports: [
         CommonModule,
         QrCodeGeneratorComponent

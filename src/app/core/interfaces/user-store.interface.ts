@@ -6,6 +6,6 @@ export interface IUserStore {
   readonly loading: Signal<boolean>;
   readonly error: Signal<string | null>;
 
-  load(id: string): void;
+  loadUser(id: string): void;
   clear(): void;
 }

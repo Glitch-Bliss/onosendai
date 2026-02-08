@@ -5,10 +5,11 @@ import { QrcodeDemo } from "../components/demo/demo";
 @Component({
     standalone: true,
     selector: 'app-scanners-demo-page',
+    styles: ':host{padding:2%}',
     imports: [
-    CommonModule,
-    QrcodeDemo
-],
+        CommonModule,
+        QrcodeDemo
+    ],
     template: `
     <h1>@for (c of title; track $index) { <span>{{ c }}</span> }</h1>
     <app-scanners-demo/>

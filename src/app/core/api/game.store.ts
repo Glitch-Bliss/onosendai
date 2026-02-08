@@ -20,8 +20,13 @@ export class GameStore implements IGameStore {
     readonly currentGame = computed(() => this._currentGame());
     readonly currentPlayers: Signal<Player[]> = signal([]);
     readonly loading = computed(() => this._loading());
+    readonly currentPlayer: Signal<Player | null> = signal<Player | null>(null);
 
     constructor(private http: HttpClient) { }
+    setCurrentPlayer(id: string): void {
+        throw new Error('Method not implemented.');
+    }
+
 
     getGameById(id: string): Signal<Game | null> {
         throw new Error('Method not implemented.');
